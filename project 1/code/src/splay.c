@@ -1,21 +1,17 @@
 #include<stdio.h>
 #include<stdlib.h>
-typedef struct node{
-  struct node *left;
-  struct node *right;
-  struct node *parent;
-  int val;
-}node;
-node *createnode(int k)
+#include"splay.h"
+
+SplayNode *createnode(int k)
 {
-    node *new=(node *)malloc(sizeof(node));
+    SplayNode *new=(SplayNode *)malloc(sizeof(SplayNode));
     new->left=NULL;
     new->right=NULL;
     new->parent=NULL;
     new->val=k;
     return new;
 }
-node *insert(node *newnode,node *root)
+SplayNode *insert(SplayNode *newnode,SplayNode *root)
 {
     if(root==NULL)
     {
@@ -28,7 +24,7 @@ node *insert(node *newnode,node *root)
       root->left=insert(newnode,root->left);
     return root;
 }
-node *search(int k,node *root)
+SplayNode *search(int k,SplayNode *root)
 {
 	if(!root)
 	  return NULL;
@@ -38,12 +34,12 @@ node *search(int k,node *root)
 	  return search(k,root->left);
 	return search(k,root->right);
 } 
-void rightrotate(node* root,node *newnode)
+void rightrotate(SplayNode* root,SplayNode *newnode)
 {
-    node *nr=newnode->right;
+    SplayNode *nr=newnode->right;
     if(root->parent)
     {
-      node *grandfather=root->parent;
+      SplayNode *grandfather=root->parent;
       if(grandfather->left==root)
       {
         grandfather->left=newnode;
@@ -63,12 +59,12 @@ void rightrotate(node* root,node *newnode)
 	  nr->parent=root;
     return ;
 }
-void leftrotate(node* root,node *newnode)
+void leftrotate(SplayNode* root,SplayNode *newnode)
 {
-    node *nl=newnode->left;
+    SplayNode *nl=newnode->left;
     if(root->parent)
     {
-      node *grandfather=root->parent;
+      SplayNode *grandfather=root->parent;
       if(grandfather->left==root)
       {
         grandfather->left=newnode;
@@ -88,11 +84,11 @@ void leftrotate(node* root,node *newnode)
 	  nl->parent=root;
 	return ;
 }
-void splay(node *newnode,node *root)
+void splay(SplayNode *newnode,SplayNode *root)
 {
     while(1)
     {
-        node *parent=newnode->parent;
+        SplayNode *parent=newnode->parent;
         if(parent==NULL)
           break;
         else
@@ -112,7 +108,7 @@ void splay(node *newnode,node *root)
             }
             else
             {
-                node *grandparent=parent->parent;
+                SplayNode *grandparent=parent->parent;
                 if(grandparent->left&&grandparent->left->left==newnode) //zig-zig ll
                 {
                    //printf("ll ");
@@ -142,7 +138,7 @@ void splay(node *newnode,node *root)
     }
     return ;
 }
-node * findmax(node *root)
+SplayNode * findmax(SplayNode *root)
 {
     if(!root)
       return NULL;
@@ -150,7 +146,7 @@ node * findmax(node *root)
       return findmax(root->right);
     return root;
 }
-node * findmin(node *root)
+SplayNode * findmin(SplayNode *root)
 {
     if(!root)
       return NULL;
@@ -158,9 +154,9 @@ node * findmin(node *root)
       return findmax(root->left);
     return root;
 }
-node *delete(node *root)
+SplayNode *delete(SplayNode *root)
 {
-    node *max=(node*)malloc(sizeof(node));
+    SplayNode *max=(SplayNode*)malloc(sizeof(SplayNode));
 	max=findmax(root->left);
     if(max)
     {
@@ -178,7 +174,7 @@ node *delete(node *root)
 	    root->right->parent=max;
 	  return max;
     }
-    node *min=(node*)malloc(sizeof(node));
+    SplayNode *min=(SplayNode*)malloc(sizeof(SplayNode));
     min=findmin(root->right);
     if(min)
     {
@@ -199,7 +195,7 @@ node *delete(node *root)
     }
     return NULL;
 }
-void Traverse(node *root)
+void Traverse(SplayNode *root)
 {
     if(!root) return ;
     Traverse(root->left);
@@ -207,39 +203,39 @@ void Traverse(node *root)
     Traverse(root->right);
     return ;
 }
-int main()
-{
-	int i;
-    node *root=(node*)malloc(sizeof(node));
-    node *newnode=(node*)malloc(sizeof(node));
-    node *target=(node*)malloc(sizeof(node));
-    node *target1=(node*)malloc(sizeof(node));
-    root=NULL;
-    newnode=NULL;
-    int n,a[101];
-    char operation[101];
-    scanf("%d",&n);
-    for(i=0;i<n;i++)
-    {
-      scanf("%d %c",&a[i],&operation[i]);      
-	  newnode=createnode(a[i]);
-      if(operation[i]=='i')
-      {
-        root=insert(newnode,root);
-        splay(newnode,root);
-        root=newnode;
-      //  Traverse(root);
-      }
-      else if(operation[i]=='d')
-      {
-      	target=search(a[i],root);
-        splay(target,root);
-        root=target;
-       root=delete(root);
-      //  Traverse(root);
-      }
-      target1=search(3,root);
-    } 
+// int main()
+// {
+// 	int i;
+//     SplayNode *root=(SplayNode*)malloc(sizeof(SplayNode));
+//     SplayNode *newnode=(SplayNode*)malloc(sizeof(SplayNode));
+//     SplayNode *target=(SplayNode*)malloc(sizeof(SplayNode));
+//     SplayNode *target1=(SplayNode*)malloc(sizeof(SplayNode));
+//     root=NULL;
+//     newnode=NULL;
+//     int n,a[101];
+//     char operation[101];
+//     scanf("%d",&n);
+//     for(i=0;i<n;i++)
+//     {
+//       scanf("%d %c",&a[i],&operation[i]);      
+// 	  newnode=createnode(a[i]);
+//       if(operation[i]=='i')
+//       {
+//         root=insert(newnode,root);
+//         splay(newnode,root);
+//         root=newnode;
+//       //  Traverse(root);
+//       }
+//       else if(operation[i]=='d')
+//       {
+//       	target=search(a[i],root);
+//         splay(target,root);
+//         root=target;
+//        root=delete(root);
+//       //  Traverse(root);
+//       }
+//       target1=search(3,root);
+//     } 
 
-    Traverse(root);
-}
+//     Traverse(root);
+// }
