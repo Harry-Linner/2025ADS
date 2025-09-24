@@ -1,3 +1,0 @@
-"C:\Program Files\CMake\bin\cmake.exe" -E rm -f CMakeFiles\tree_analyzer.dir/objects.a
-D:\mingw64\bin\ar.exe qc CMakeFiles\tree_analyzer.dir/objects.a @CMakeFiles\tree_analyzer.dir\objects1.rsp
-D:\mingw64\bin\gcc.exe -g -Wl,--whole-archive CMakeFiles\tree_analyzer.dir/objects.a -Wl,--no-whole-archive -o tree_analyzer.exe -Wl,--out-implib,libtree_analyzer.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\tree_analyzer.dir\linkLibs.rsp
