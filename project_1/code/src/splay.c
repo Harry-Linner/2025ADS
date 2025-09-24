@@ -17,11 +17,16 @@ SplayNode *insert(SplayNode *newnode,SplayNode *root)
     {
       return newnode;
     }
-    newnode->parent=root;
     if(newnode->val>root->val)
+    {
       root->right=insert(newnode,root->right);
+      if(root->right) root->right->parent=root;
+    }
     else if(newnode->val<root->val)
+    {
       root->left=insert(newnode,root->left);
+      if(root->left) root->left->parent=root;
+    }
     return root;
 }
 SplayNode *search(int k,SplayNode *root)
@@ -154,34 +159,47 @@ SplayNode * findmin(SplayNode *root)
       return findmin(root->left);
     return root;
 }
-SplayNode *delete(SplayNode *root) {
-    if (root == NULL)
-        return NULL;
-    
-    SplayNode *new_root = NULL;
-    
-    if (root->left) {
-        SplayNode *max = findmax(root->left);
-        splay(max, root->left);
-        new_root = root->left;
-        if (new_root) {
-            new_root->right = root->right;
-            if (root->right)
-                root->right->parent = new_root;
-        }
-    } else if (root->right) {
-        SplayNode *min = findmin(root->right);
-        splay(min, root->right);
-        new_root = root->right;
-        if (new_root) {
-            new_root->left = root->left;
-            if (root->left)
-                root->left->parent = new_root;
-        }
+SplayNode *delete(node *root)
+{
+    SplayNode *max=(node*)malloc(sizeof(node));
+  	max=findmax(root->left);
+    if(max)
+    {
+    //	printf("max=%d\n",max->val );
+      if(max!=root->left)
+	  {	
+	    max->parent->right=max->left;
+	    if(max->left ) max->left->parent=max->parent;
+	    max->left=root->left;
+		root->left->parent=max;
+      }
+	  max->right=root->right;
+      max->parent=NULL;
+      
+      if(root->right) 
+	    root->right->parent=max;
+	  return max;
     }
-    
-    free(root);
-    return new_root;
+    SplayNode *min=(SplayNode*)malloc(sizeof(node));
+    min=findmin(root->right);
+    if(min)
+    {
+
+      if(min!=root->right)
+      {
+	    min->parent->left=min->right;
+	    if(min->right ) min->right->parent=min->parent;
+        min->right=root->right;
+        root->right->parent=min; 
+		
+      }      
+     
+	  min->parent=NULL;
+      min->left=NULL;
+     // root=min;
+	 return min;
+    }
+    return NULL;
 }
 void Traverse(SplayNode *root)
 {
