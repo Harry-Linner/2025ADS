@@ -56,10 +56,10 @@ RM = "C:\Program Files\CMake\bin\cmake.exe" -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = "D:\Desktop\zju\2025ADS\project 1\code"
+CMAKE_SOURCE_DIR = D:\Desktop\zju\2025ADS\project_1\code
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = "D:\Desktop\zju\2025ADS\project 1\code\build"
+CMAKE_BINARY_DIR = D:\Desktop\zju\2025ADS\project_1\code\build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -86,14 +86,14 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	cd /d "D:\Desktop\zju\2025ADS\project 1\code\build" && $(CMAKE_COMMAND) -E cmake_progress_start "D:\Desktop\zju\2025ADS\project 1\code\build\CMakeFiles" "D:\Desktop\zju\2025ADS\project 1\code\build\random_generator\\CMakeFiles\progress.marks"
-	cd /d "D:\Desktop\zju\2025ADS\project 1\code\build" && $(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 random_generator/all
-	$(CMAKE_COMMAND) -E cmake_progress_start "D:\Desktop\zju\2025ADS\project 1\code\build\CMakeFiles" 0
+	cd /d D:\Desktop\zju\2025ADS\project_1\code\build && $(CMAKE_COMMAND) -E cmake_progress_start D:\Desktop\zju\2025ADS\project_1\code\build\CMakeFiles D:\Desktop\zju\2025ADS\project_1\code\build\random_generator\\CMakeFiles\progress.marks
+	cd /d D:\Desktop\zju\2025ADS\project_1\code\build && $(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 random_generator/all
+	$(CMAKE_COMMAND) -E cmake_progress_start D:\Desktop\zju\2025ADS\project_1\code\build\CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /d "D:\Desktop\zju\2025ADS\project 1\code\build" && $(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 random_generator/clean
+	cd /d D:\Desktop\zju\2025ADS\project_1\code\build && $(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 random_generator/clean
 .PHONY : clean
 
 # The main clean target
@@ -102,22 +102,22 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /d "D:\Desktop\zju\2025ADS\project 1\code\build" && $(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 random_generator/preinstall
+	cd /d D:\Desktop\zju\2025ADS\project_1\code\build && $(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 random_generator/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /d "D:\Desktop\zju\2025ADS\project 1\code\build" && $(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 random_generator/preinstall
+	cd /d D:\Desktop\zju\2025ADS\project_1\code\build && $(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 random_generator/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd /d "D:\Desktop\zju\2025ADS\project 1\code\build" && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles\Makefile.cmake 1
+	cd /d D:\Desktop\zju\2025ADS\project_1\code\build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles\Makefile.cmake 1
 .PHONY : depend
 
 # Convenience name for target.
 random_generator/CMakeFiles/random_generator.dir/rule:
-	cd /d "D:\Desktop\zju\2025ADS\project 1\code\build" && $(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 random_generator/CMakeFiles/random_generator.dir/rule
+	cd /d D:\Desktop\zju\2025ADS\project_1\code\build && $(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 random_generator/CMakeFiles/random_generator.dir/rule
 .PHONY : random_generator/CMakeFiles/random_generator.dir/rule
 
 # Convenience name for target.
@@ -126,7 +126,7 @@ random_generator: random_generator/CMakeFiles/random_generator.dir/rule
 
 # fast build rule for target.
 random_generator/fast:
-	cd /d "D:\Desktop\zju\2025ADS\project 1\code\build" && $(MAKE) $(MAKESILENT) -f random_generator\CMakeFiles\random_generator.dir\build.make random_generator/CMakeFiles/random_generator.dir/build
+	cd /d D:\Desktop\zju\2025ADS\project_1\code\build && $(MAKE) $(MAKESILENT) -f random_generator\CMakeFiles\random_generator.dir\build.make random_generator/CMakeFiles/random_generator.dir/build
 .PHONY : random_generator/fast
 
 random_generator.obj: random_generator.c.obj
@@ -134,7 +134,7 @@ random_generator.obj: random_generator.c.obj
 
 # target to build an object file
 random_generator.c.obj:
-	cd /d "D:\Desktop\zju\2025ADS\project 1\code\build" && $(MAKE) $(MAKESILENT) -f random_generator\CMakeFiles\random_generator.dir\build.make random_generator/CMakeFiles/random_generator.dir/random_generator.c.obj
+	cd /d D:\Desktop\zju\2025ADS\project_1\code\build && $(MAKE) $(MAKESILENT) -f random_generator\CMakeFiles\random_generator.dir\build.make random_generator/CMakeFiles/random_generator.dir/random_generator.c.obj
 .PHONY : random_generator.c.obj
 
 random_generator.i: random_generator.c.i
@@ -142,7 +142,7 @@ random_generator.i: random_generator.c.i
 
 # target to preprocess a source file
 random_generator.c.i:
-	cd /d "D:\Desktop\zju\2025ADS\project 1\code\build" && $(MAKE) $(MAKESILENT) -f random_generator\CMakeFiles\random_generator.dir\build.make random_generator/CMakeFiles/random_generator.dir/random_generator.c.i
+	cd /d D:\Desktop\zju\2025ADS\project_1\code\build && $(MAKE) $(MAKESILENT) -f random_generator\CMakeFiles\random_generator.dir\build.make random_generator/CMakeFiles/random_generator.dir/random_generator.c.i
 .PHONY : random_generator.c.i
 
 random_generator.s: random_generator.c.s
@@ -150,7 +150,7 @@ random_generator.s: random_generator.c.s
 
 # target to generate assembly for a file
 random_generator.c.s:
-	cd /d "D:\Desktop\zju\2025ADS\project 1\code\build" && $(MAKE) $(MAKESILENT) -f random_generator\CMakeFiles\random_generator.dir\build.make random_generator/CMakeFiles/random_generator.dir/random_generator.c.s
+	cd /d D:\Desktop\zju\2025ADS\project_1\code\build && $(MAKE) $(MAKESILENT) -f random_generator\CMakeFiles\random_generator.dir\build.make random_generator/CMakeFiles/random_generator.dir/random_generator.c.s
 .PHONY : random_generator.c.s
 
 # Help Target
@@ -176,6 +176,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd /d "D:\Desktop\zju\2025ADS\project 1\code\build" && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles\Makefile.cmake 0
+	cd /d D:\Desktop\zju\2025ADS\project_1\code\build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles\Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

@@ -52,10 +52,10 @@ RM = "C:\Program Files\CMake\bin\cmake.exe" -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = "D:\Desktop\zju\2025ADS\project 1\code"
+CMAKE_SOURCE_DIR = D:\Desktop\zju\2025ADS\project_1\code
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = "D:\Desktop\zju\2025ADS\project 1\code\build"
+CMAKE_BINARY_DIR = D:\Desktop\zju\2025ADS\project_1\code\build
 
 # Include any dependencies generated for this target.
 include random_generator/CMakeFiles/random_generator.dir/depend.make
@@ -72,18 +72,18 @@ random_generator/CMakeFiles/random_generator.dir/codegen:
 .PHONY : random_generator/CMakeFiles/random_generator.dir/codegen
 
 random_generator/CMakeFiles/random_generator.dir/random_generator.c.obj: random_generator/CMakeFiles/random_generator.dir/flags.make
-random_generator/CMakeFiles/random_generator.dir/random_generator.c.obj: D:/Desktop/zju/2025ADS/project\ 1/code/random_generator/random_generator.c
+random_generator/CMakeFiles/random_generator.dir/random_generator.c.obj: D:/Desktop/zju/2025ADS/project_1/code/random_generator/random_generator.c
 random_generator/CMakeFiles/random_generator.dir/random_generator.c.obj: random_generator/CMakeFiles/random_generator.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="D:\Desktop\zju\2025ADS\project 1\code\build\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1) "Building C object random_generator/CMakeFiles/random_generator.dir/random_generator.c.obj"
-	cd /d "D:\Desktop\zju\2025ADS\project 1\code\build\random_generator" && D:\mingw64\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT random_generator/CMakeFiles/random_generator.dir/random_generator.c.obj -MF CMakeFiles\random_generator.dir\random_generator.c.obj.d -o CMakeFiles\random_generator.dir\random_generator.c.obj -c "D:\Desktop\zju\2025ADS\project 1\code\random_generator\random_generator.c"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=D:\Desktop\zju\2025ADS\project_1\code\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object random_generator/CMakeFiles/random_generator.dir/random_generator.c.obj"
+	cd /d D:\Desktop\zju\2025ADS\project_1\code\build\random_generator && D:\mingw64\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT random_generator/CMakeFiles/random_generator.dir/random_generator.c.obj -MF CMakeFiles\random_generator.dir\random_generator.c.obj.d -o CMakeFiles\random_generator.dir\random_generator.c.obj -c D:\Desktop\zju\2025ADS\project_1\code\random_generator\random_generator.c
 
 random_generator/CMakeFiles/random_generator.dir/random_generator.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/random_generator.dir/random_generator.c.i"
-	cd /d "D:\Desktop\zju\2025ADS\project 1\code\build\random_generator" && D:\mingw64\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E "D:\Desktop\zju\2025ADS\project 1\code\random_generator\random_generator.c" > CMakeFiles\random_generator.dir\random_generator.c.i
+	cd /d D:\Desktop\zju\2025ADS\project_1\code\build\random_generator && D:\mingw64\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E D:\Desktop\zju\2025ADS\project_1\code\random_generator\random_generator.c > CMakeFiles\random_generator.dir\random_generator.c.i
 
 random_generator/CMakeFiles/random_generator.dir/random_generator.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/random_generator.dir/random_generator.c.s"
-	cd /d "D:\Desktop\zju\2025ADS\project 1\code\build\random_generator" && D:\mingw64\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S "D:\Desktop\zju\2025ADS\project 1\code\random_generator\random_generator.c" -o CMakeFiles\random_generator.dir\random_generator.c.s
+	cd /d D:\Desktop\zju\2025ADS\project_1\code\build\random_generator && D:\mingw64\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S D:\Desktop\zju\2025ADS\project_1\code\random_generator\random_generator.c -o CMakeFiles\random_generator.dir\random_generator.c.s
 
 # Object files for target random_generator
 random_generator_OBJECTS = \
@@ -97,18 +97,18 @@ random_generator/random_generator.exe: random_generator/CMakeFiles/random_genera
 random_generator/random_generator.exe: random_generator/CMakeFiles/random_generator.dir/linkLibs.rsp
 random_generator/random_generator.exe: random_generator/CMakeFiles/random_generator.dir/objects1.rsp
 random_generator/random_generator.exe: random_generator/CMakeFiles/random_generator.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir="D:\Desktop\zju\2025ADS\project 1\code\build\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2) "Linking C executable random_generator.exe"
-	cd /d "D:\Desktop\zju\2025ADS\project 1\code\build\random_generator" && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles\random_generator.dir\link.txt --verbose=$(VERBOSE)
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=D:\Desktop\zju\2025ADS\project_1\code\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking C executable random_generator.exe"
+	cd /d D:\Desktop\zju\2025ADS\project_1\code\build\random_generator && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles\random_generator.dir\link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
 random_generator/CMakeFiles/random_generator.dir/build: random_generator/random_generator.exe
 .PHONY : random_generator/CMakeFiles/random_generator.dir/build
 
 random_generator/CMakeFiles/random_generator.dir/clean:
-	cd /d "D:\Desktop\zju\2025ADS\project 1\code\build\random_generator" && $(CMAKE_COMMAND) -P CMakeFiles\random_generator.dir\cmake_clean.cmake
+	cd /d D:\Desktop\zju\2025ADS\project_1\code\build\random_generator && $(CMAKE_COMMAND) -P CMakeFiles\random_generator.dir\cmake_clean.cmake
 .PHONY : random_generator/CMakeFiles/random_generator.dir/clean
 
 random_generator/CMakeFiles/random_generator.dir/depend:
-	$(CMAKE_COMMAND) -E cmake_depends "MinGW Makefiles" "D:\Desktop\zju\2025ADS\project 1\code" "D:\Desktop\zju\2025ADS\project 1\code\random_generator" "D:\Desktop\zju\2025ADS\project 1\code\build" "D:\Desktop\zju\2025ADS\project 1\code\build\random_generator" "D:\Desktop\zju\2025ADS\project 1\code\build\random_generator\CMakeFiles\random_generator.dir\DependInfo.cmake" "--color=$(COLOR)"
+	$(CMAKE_COMMAND) -E cmake_depends "MinGW Makefiles" D:\Desktop\zju\2025ADS\project_1\code D:\Desktop\zju\2025ADS\project_1\code\random_generator D:\Desktop\zju\2025ADS\project_1\code\build D:\Desktop\zju\2025ADS\project_1\code\build\random_generator D:\Desktop\zju\2025ADS\project_1\code\build\random_generator\CMakeFiles\random_generator.dir\DependInfo.cmake "--color=$(COLOR)"
 .PHONY : random_generator/CMakeFiles/random_generator.dir/depend
 

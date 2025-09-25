@@ -15,7 +15,7 @@ SplayNode* createnode(int k);
 SplayNode* insert(SplayNode *newnode, SplayNode *root);
 SplayNode* search(int k, SplayNode *root);
 SplayNode* delete(SplayNode *root);
-void splay(SplayNode *newnode, SplayNode *root);
+SplayNode* splay(SplayNode *newnode, SplayNode *root);
 void Traverse(SplayNode *root);
 
 #endif

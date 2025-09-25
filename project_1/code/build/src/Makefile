@@ -56,10 +56,10 @@ RM = "C:\Program Files\CMake\bin\cmake.exe" -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = "D:\Desktop\zju\2025ADS\project 1\code"
+CMAKE_SOURCE_DIR = D:\Desktop\zju\2025ADS\project_1\code
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = "D:\Desktop\zju\2025ADS\project 1\code\build"
+CMAKE_BINARY_DIR = D:\Desktop\zju\2025ADS\project_1\code\build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -86,14 +86,14 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	cd /d "D:\Desktop\zju\2025ADS\project 1\code\build" && $(CMAKE_COMMAND) -E cmake_progress_start "D:\Desktop\zju\2025ADS\project 1\code\build\CMakeFiles" "D:\Desktop\zju\2025ADS\project 1\code\build\src\\CMakeFiles\progress.marks"
-	cd /d "D:\Desktop\zju\2025ADS\project 1\code\build" && $(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 src/all
-	$(CMAKE_COMMAND) -E cmake_progress_start "D:\Desktop\zju\2025ADS\project 1\code\build\CMakeFiles" 0
+	cd /d D:\Desktop\zju\2025ADS\project_1\code\build && $(CMAKE_COMMAND) -E cmake_progress_start D:\Desktop\zju\2025ADS\project_1\code\build\CMakeFiles D:\Desktop\zju\2025ADS\project_1\code\build\src\\CMakeFiles\progress.marks
+	cd /d D:\Desktop\zju\2025ADS\project_1\code\build && $(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 src/all
+	$(CMAKE_COMMAND) -E cmake_progress_start D:\Desktop\zju\2025ADS\project_1\code\build\CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /d "D:\Desktop\zju\2025ADS\project 1\code\build" && $(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 src/clean
+	cd /d D:\Desktop\zju\2025ADS\project_1\code\build && $(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 src/clean
 .PHONY : clean
 
 # The main clean target
@@ -102,22 +102,22 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /d "D:\Desktop\zju\2025ADS\project 1\code\build" && $(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 src/preinstall
+	cd /d D:\Desktop\zju\2025ADS\project_1\code\build && $(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 src/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /d "D:\Desktop\zju\2025ADS\project 1\code\build" && $(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 src/preinstall
+	cd /d D:\Desktop\zju\2025ADS\project_1\code\build && $(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 src/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd /d "D:\Desktop\zju\2025ADS\project 1\code\build" && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles\Makefile.cmake 1
+	cd /d D:\Desktop\zju\2025ADS\project_1\code\build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles\Makefile.cmake 1
 .PHONY : depend
 
 # Convenience name for target.
 src/CMakeFiles/tree_analyzer.dir/rule:
-	cd /d "D:\Desktop\zju\2025ADS\project 1\code\build" && $(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 src/CMakeFiles/tree_analyzer.dir/rule
+	cd /d D:\Desktop\zju\2025ADS\project_1\code\build && $(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 src/CMakeFiles/tree_analyzer.dir/rule
 .PHONY : src/CMakeFiles/tree_analyzer.dir/rule
 
 # Convenience name for target.
@@ -126,7 +126,7 @@ tree_analyzer: src/CMakeFiles/tree_analyzer.dir/rule
 
 # fast build rule for target.
 tree_analyzer/fast:
-	cd /d "D:\Desktop\zju\2025ADS\project 1\code\build" && $(MAKE) $(MAKESILENT) -f src\CMakeFiles\tree_analyzer.dir\build.make src/CMakeFiles/tree_analyzer.dir/build
+	cd /d D:\Desktop\zju\2025ADS\project_1\code\build && $(MAKE) $(MAKESILENT) -f src\CMakeFiles\tree_analyzer.dir\build.make src/CMakeFiles/tree_analyzer.dir/build
 .PHONY : tree_analyzer/fast
 
 AVLTree.obj: AVLTree.c.obj
@@ -134,7 +134,7 @@ AVLTree.obj: AVLTree.c.obj
 
 # target to build an object file
 AVLTree.c.obj:
-	cd /d "D:\Desktop\zju\2025ADS\project 1\code\build" && $(MAKE) $(MAKESILENT) -f src\CMakeFiles\tree_analyzer.dir\build.make src/CMakeFiles/tree_analyzer.dir/AVLTree.c.obj
+	cd /d D:\Desktop\zju\2025ADS\project_1\code\build && $(MAKE) $(MAKESILENT) -f src\CMakeFiles\tree_analyzer.dir\build.make src/CMakeFiles/tree_analyzer.dir/AVLTree.c.obj
 .PHONY : AVLTree.c.obj
 
 AVLTree.i: AVLTree.c.i
@@ -142,7 +142,7 @@ AVLTree.i: AVLTree.c.i
 
 # target to preprocess a source file
 AVLTree.c.i:
-	cd /d "D:\Desktop\zju\2025ADS\project 1\code\build" && $(MAKE) $(MAKESILENT) -f src\CMakeFiles\tree_analyzer.dir\build.make src/CMakeFiles/tree_analyzer.dir/AVLTree.c.i
+	cd /d D:\Desktop\zju\2025ADS\project_1\code\build && $(MAKE) $(MAKESILENT) -f src\CMakeFiles\tree_analyzer.dir\build.make src/CMakeFiles/tree_analyzer.dir/AVLTree.c.i
 .PHONY : AVLTree.c.i
 
 AVLTree.s: AVLTree.c.s
@@ -150,7 +150,7 @@ AVLTree.s: AVLTree.c.s
 
 # target to generate assembly for a file
 AVLTree.c.s:
-	cd /d "D:\Desktop\zju\2025ADS\project 1\code\build" && $(MAKE) $(MAKESILENT) -f src\CMakeFiles\tree_analyzer.dir\build.make src/CMakeFiles/tree_analyzer.dir/AVLTree.c.s
+	cd /d D:\Desktop\zju\2025ADS\project_1\code\build && $(MAKE) $(MAKESILENT) -f src\CMakeFiles\tree_analyzer.dir\build.make src/CMakeFiles/tree_analyzer.dir/AVLTree.c.s
 .PHONY : AVLTree.c.s
 
 BST.obj: BST.c.obj
@@ -158,7 +158,7 @@ BST.obj: BST.c.obj
 
 # target to build an object file
 BST.c.obj:
-	cd /d "D:\Desktop\zju\2025ADS\project 1\code\build" && $(MAKE) $(MAKESILENT) -f src\CMakeFiles\tree_analyzer.dir\build.make src/CMakeFiles/tree_analyzer.dir/BST.c.obj
+	cd /d D:\Desktop\zju\2025ADS\project_1\code\build && $(MAKE) $(MAKESILENT) -f src\CMakeFiles\tree_analyzer.dir\build.make src/CMakeFiles/tree_analyzer.dir/BST.c.obj
 .PHONY : BST.c.obj
 
 BST.i: BST.c.i
@@ -166,7 +166,7 @@ BST.i: BST.c.i
 
 # target to preprocess a source file
 BST.c.i:
-	cd /d "D:\Desktop\zju\2025ADS\project 1\code\build" && $(MAKE) $(MAKESILENT) -f src\CMakeFiles\tree_analyzer.dir\build.make src/CMakeFiles/tree_analyzer.dir/BST.c.i
+	cd /d D:\Desktop\zju\2025ADS\project_1\code\build && $(MAKE) $(MAKESILENT) -f src\CMakeFiles\tree_analyzer.dir\build.make src/CMakeFiles/tree_analyzer.dir/BST.c.i
 .PHONY : BST.c.i
 
 BST.s: BST.c.s
@@ -174,7 +174,7 @@ BST.s: BST.c.s
 
 # target to generate assembly for a file
 BST.c.s:
-	cd /d "D:\Desktop\zju\2025ADS\project 1\code\build" && $(MAKE) $(MAKESILENT) -f src\CMakeFiles\tree_analyzer.dir\build.make src/CMakeFiles/tree_analyzer.dir/BST.c.s
+	cd /d D:\Desktop\zju\2025ADS\project_1\code\build && $(MAKE) $(MAKESILENT) -f src\CMakeFiles\tree_analyzer.dir\build.make src/CMakeFiles/tree_analyzer.dir/BST.c.s
 .PHONY : BST.c.s
 
 main.obj: main.c.obj
@@ -182,7 +182,7 @@ main.obj: main.c.obj
 
 # target to build an object file
 main.c.obj:
-	cd /d "D:\Desktop\zju\2025ADS\project 1\code\build" && $(MAKE) $(MAKESILENT) -f src\CMakeFiles\tree_analyzer.dir\build.make src/CMakeFiles/tree_analyzer.dir/main.c.obj
+	cd /d D:\Desktop\zju\2025ADS\project_1\code\build && $(MAKE) $(MAKESILENT) -f src\CMakeFiles\tree_analyzer.dir\build.make src/CMakeFiles/tree_analyzer.dir/main.c.obj
 .PHONY : main.c.obj
 
 main.i: main.c.i
@@ -190,7 +190,7 @@ main.i: main.c.i
 
 # target to preprocess a source file
 main.c.i:
-	cd /d "D:\Desktop\zju\2025ADS\project 1\code\build" && $(MAKE) $(MAKESILENT) -f src\CMakeFiles\tree_analyzer.dir\build.make src/CMakeFiles/tree_analyzer.dir/main.c.i
+	cd /d D:\Desktop\zju\2025ADS\project_1\code\build && $(MAKE) $(MAKESILENT) -f src\CMakeFiles\tree_analyzer.dir\build.make src/CMakeFiles/tree_analyzer.dir/main.c.i
 .PHONY : main.c.i
 
 main.s: main.c.s
@@ -198,7 +198,7 @@ main.s: main.c.s
 
 # target to generate assembly for a file
 main.c.s:
-	cd /d "D:\Desktop\zju\2025ADS\project 1\code\build" && $(MAKE) $(MAKESILENT) -f src\CMakeFiles\tree_analyzer.dir\build.make src/CMakeFiles/tree_analyzer.dir/main.c.s
+	cd /d D:\Desktop\zju\2025ADS\project_1\code\build && $(MAKE) $(MAKESILENT) -f src\CMakeFiles\tree_analyzer.dir\build.make src/CMakeFiles/tree_analyzer.dir/main.c.s
 .PHONY : main.c.s
 
 splay.obj: splay.c.obj
@@ -206,7 +206,7 @@ splay.obj: splay.c.obj
 
 # target to build an object file
 splay.c.obj:
-	cd /d "D:\Desktop\zju\2025ADS\project 1\code\build" && $(MAKE) $(MAKESILENT) -f src\CMakeFiles\tree_analyzer.dir\build.make src/CMakeFiles/tree_analyzer.dir/splay.c.obj
+	cd /d D:\Desktop\zju\2025ADS\project_1\code\build && $(MAKE) $(MAKESILENT) -f src\CMakeFiles\tree_analyzer.dir\build.make src/CMakeFiles/tree_analyzer.dir/splay.c.obj
 .PHONY : splay.c.obj
 
 splay.i: splay.c.i
@@ -214,7 +214,7 @@ splay.i: splay.c.i
 
 # target to preprocess a source file
 splay.c.i:
-	cd /d "D:\Desktop\zju\2025ADS\project 1\code\build" && $(MAKE) $(MAKESILENT) -f src\CMakeFiles\tree_analyzer.dir\build.make src/CMakeFiles/tree_analyzer.dir/splay.c.i
+	cd /d D:\Desktop\zju\2025ADS\project_1\code\build && $(MAKE) $(MAKESILENT) -f src\CMakeFiles\tree_analyzer.dir\build.make src/CMakeFiles/tree_analyzer.dir/splay.c.i
 .PHONY : splay.c.i
 
 splay.s: splay.c.s
@@ -222,7 +222,7 @@ splay.s: splay.c.s
 
 # target to generate assembly for a file
 splay.c.s:
-	cd /d "D:\Desktop\zju\2025ADS\project 1\code\build" && $(MAKE) $(MAKESILENT) -f src\CMakeFiles\tree_analyzer.dir\build.make src/CMakeFiles/tree_analyzer.dir/splay.c.s
+	cd /d D:\Desktop\zju\2025ADS\project_1\code\build && $(MAKE) $(MAKESILENT) -f src\CMakeFiles\tree_analyzer.dir\build.make src/CMakeFiles/tree_analyzer.dir/splay.c.s
 .PHONY : splay.c.s
 
 # Help Target
@@ -257,6 +257,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd /d "D:\Desktop\zju\2025ADS\project 1\code\build" && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles\Makefile.cmake 0
+	cd /d D:\Desktop\zju\2025ADS\project_1\code\build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles\Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

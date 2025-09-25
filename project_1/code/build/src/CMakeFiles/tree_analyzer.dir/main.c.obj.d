@@ -1,5 +1,5 @@
 src/CMakeFiles/tree_analyzer.dir/main.c.obj: \
- D:\Desktop\zju\2025ADS\project\ 1\code\src\main.c \
+ D:\Desktop\zju\2025ADS\project_1\code\src\main.c \
  D:/mingw64/x86_64-w64-mingw32/include/stdio.h \
  D:/mingw64/x86_64-w64-mingw32/include/crtdefs.h \
  D:/mingw64/x86_64-w64-mingw32/include/_mingw.h \
@@ -26,6 +26,6 @@ src/CMakeFiles/tree_analyzer.dir/main.c.obj: \
  D:/mingw64/x86_64-w64-mingw32/include/pthread_time.h \
  D:/mingw64/x86_64-w64-mingw32/include/string.h \
  D:/mingw64/x86_64-w64-mingw32/include/sec_api/string_s.h \
- D:\Desktop\zju\2025ADS\project\ 1\code\src\BST.h \
- D:\Desktop\zju\2025ADS\project\ 1\code\src\AVLTree.h \
- D:\Desktop\zju\2025ADS\project\ 1\code\src\splay.h
+ D:\Desktop\zju\2025ADS\project_1\code\src\BST.h \
+ D:\Desktop\zju\2025ADS\project_1\code\src\AVLTree.h \
+ D:\Desktop\zju\2025ADS\project_1\code\src\splay.h

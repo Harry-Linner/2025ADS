@@ -1,5 +1,5 @@
 src/CMakeFiles/tree_analyzer.dir/AVLTree.c.obj: \
- D:\Desktop\zju\2025ADS\project\ 1\code\src\AVLTree.c \
+ D:\Desktop\zju\2025ADS\project_1\code\src\AVLTree.c \
  D:/mingw64/x86_64-w64-mingw32/include/stdio.h \
  D:/mingw64/x86_64-w64-mingw32/include/crtdefs.h \
  D:/mingw64/x86_64-w64-mingw32/include/_mingw.h \
@@ -19,4 +19,4 @@ src/CMakeFiles/tree_analyzer.dir/AVLTree.c.obj: \
  D:/mingw64/x86_64-w64-mingw32/include/limits.h \
  D:/mingw64/x86_64-w64-mingw32/include/sec_api/stdlib_s.h \
  D:/mingw64/x86_64-w64-mingw32/include/malloc.h \
- D:\Desktop\zju\2025ADS\project\ 1\code\src\AVLTree.h
+ D:\Desktop\zju\2025ADS\project_1\code\src\AVLTree.h

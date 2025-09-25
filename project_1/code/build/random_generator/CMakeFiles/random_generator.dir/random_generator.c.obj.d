@@ -1,5 +1,5 @@
 random_generator/CMakeFiles/random_generator.dir/random_generator.c.obj: \
- D:\Desktop\zju\2025ADS\project\ 1\code\random_generator\random_generator.c \
+ D:\Desktop\zju\2025ADS\project_1\code\random_generator\random_generator.c \
  D:/mingw64/x86_64-w64-mingw32/include/stdio.h \
  D:/mingw64/x86_64-w64-mingw32/include/crtdefs.h \
  D:/mingw64/x86_64-w64-mingw32/include/_mingw.h \

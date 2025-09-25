@@ -53,10 +53,10 @@ RM = "C:\Program Files\CMake\bin\cmake.exe" -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = "D:\Desktop\zju\2025ADS\project 1\code"
+CMAKE_SOURCE_DIR = D:\Desktop\zju\2025ADS\project_1\code
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = "D:\Desktop\zju\2025ADS\project 1\code\build"
+CMAKE_BINARY_DIR = D:\Desktop\zju\2025ADS\project_1\code\build
 
 #=============================================================================
 # Directory level rules for the build root directory
@@ -126,14 +126,14 @@ src/clean: src/CMakeFiles/tree_analyzer.dir/clean
 src/CMakeFiles/tree_analyzer.dir/all:
 	$(MAKE) $(MAKESILENT) -f src\CMakeFiles\tree_analyzer.dir\build.make src/CMakeFiles/tree_analyzer.dir/depend
 	$(MAKE) $(MAKESILENT) -f src\CMakeFiles\tree_analyzer.dir\build.make src/CMakeFiles/tree_analyzer.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="D:\Desktop\zju\2025ADS\project 1\code\build\CMakeFiles" --progress-num=3,4,5,6,7 "Built target tree_analyzer"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=D:\Desktop\zju\2025ADS\project_1\code\build\CMakeFiles --progress-num=3,4,5,6,7 "Built target tree_analyzer"
 .PHONY : src/CMakeFiles/tree_analyzer.dir/all
 
 # Build rule for subdir invocation for target.
 src/CMakeFiles/tree_analyzer.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start "D:\Desktop\zju\2025ADS\project 1\code\build\CMakeFiles" 5
+	$(CMAKE_COMMAND) -E cmake_progress_start D:\Desktop\zju\2025ADS\project_1\code\build\CMakeFiles 5
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 src/CMakeFiles/tree_analyzer.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start "D:\Desktop\zju\2025ADS\project 1\code\build\CMakeFiles" 0
+	$(CMAKE_COMMAND) -E cmake_progress_start D:\Desktop\zju\2025ADS\project_1\code\build\CMakeFiles 0
 .PHONY : src/CMakeFiles/tree_analyzer.dir/rule
 
 # Convenience name for target.
@@ -143,7 +143,7 @@ tree_analyzer: src/CMakeFiles/tree_analyzer.dir/rule
 # codegen rule for target.
 src/CMakeFiles/tree_analyzer.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f src\CMakeFiles\tree_analyzer.dir\build.make src/CMakeFiles/tree_analyzer.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="D:\Desktop\zju\2025ADS\project 1\code\build\CMakeFiles" --progress-num=3,4,5,6,7 "Finished codegen for target tree_analyzer"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=D:\Desktop\zju\2025ADS\project_1\code\build\CMakeFiles --progress-num=3,4,5,6,7 "Finished codegen for target tree_analyzer"
 .PHONY : src/CMakeFiles/tree_analyzer.dir/codegen
 
 # clean rule for target.
@@ -158,14 +158,14 @@ src/CMakeFiles/tree_analyzer.dir/clean:
 random_generator/CMakeFiles/random_generator.dir/all:
 	$(MAKE) $(MAKESILENT) -f random_generator\CMakeFiles\random_generator.dir\build.make random_generator/CMakeFiles/random_generator.dir/depend
 	$(MAKE) $(MAKESILENT) -f random_generator\CMakeFiles\random_generator.dir\build.make random_generator/CMakeFiles/random_generator.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="D:\Desktop\zju\2025ADS\project 1\code\build\CMakeFiles" --progress-num=1,2 "Built target random_generator"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=D:\Desktop\zju\2025ADS\project_1\code\build\CMakeFiles --progress-num=1,2 "Built target random_generator"
 .PHONY : random_generator/CMakeFiles/random_generator.dir/all
 
 # Build rule for subdir invocation for target.
 random_generator/CMakeFiles/random_generator.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start "D:\Desktop\zju\2025ADS\project 1\code\build\CMakeFiles" 2
+	$(CMAKE_COMMAND) -E cmake_progress_start D:\Desktop\zju\2025ADS\project_1\code\build\CMakeFiles 2
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 random_generator/CMakeFiles/random_generator.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start "D:\Desktop\zju\2025ADS\project 1\code\build\CMakeFiles" 0
+	$(CMAKE_COMMAND) -E cmake_progress_start D:\Desktop\zju\2025ADS\project_1\code\build\CMakeFiles 0
 .PHONY : random_generator/CMakeFiles/random_generator.dir/rule
 
 # Convenience name for target.
@@ -175,7 +175,7 @@ random_generator: random_generator/CMakeFiles/random_generator.dir/rule
 # codegen rule for target.
 random_generator/CMakeFiles/random_generator.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f random_generator\CMakeFiles\random_generator.dir\build.make random_generator/CMakeFiles/random_generator.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="D:\Desktop\zju\2025ADS\project 1\code\build\CMakeFiles" --progress-num=1,2 "Finished codegen for target random_generator"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=D:\Desktop\zju\2025ADS\project_1\code\build\CMakeFiles --progress-num=1,2 "Finished codegen for target random_generator"
 .PHONY : random_generator/CMakeFiles/random_generator.dir/codegen
 
 # clean rule for target.

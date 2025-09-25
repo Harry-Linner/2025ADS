@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "D:/Desktop/zju/2025ADS/project 1/code/random_generator/random_generator.c" "random_generator/CMakeFiles/random_generator.dir/random_generator.c.obj" "gcc" "random_generator/CMakeFiles/random_generator.dir/random_generator.c.obj.d"
+  "D:/Desktop/zju/2025ADS/project_1/code/random_generator/random_generator.c" "random_generator/CMakeFiles/random_generator.dir/random_generator.c.obj" "gcc" "random_generator/CMakeFiles/random_generator.dir/random_generator.c.obj.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

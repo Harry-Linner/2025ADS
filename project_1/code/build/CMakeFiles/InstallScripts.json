@@ -1,9 +1,9 @@
 {
 	"InstallScripts" : 
 	[
-		"D:/Desktop/zju/2025ADS/project 1/code/build/cmake_install.cmake",
-		"D:/Desktop/zju/2025ADS/project 1/code/build/src/cmake_install.cmake",
-		"D:/Desktop/zju/2025ADS/project 1/code/build/random_generator/cmake_install.cmake"
+		"D:/Desktop/zju/2025ADS/project_1/code/build/cmake_install.cmake",
+		"D:/Desktop/zju/2025ADS/project_1/code/build/src/cmake_install.cmake",
+		"D:/Desktop/zju/2025ADS/project_1/code/build/random_generator/cmake_install.cmake"
 	],
 	"Parallel" : false
 }

@@ -32,12 +32,12 @@ set(CMAKE_MAKEFILE_DEPENDS
   "C:/Program Files/CMake/share/cmake-4.1/Modules/Platform/Windows-windres.cmake"
   "C:/Program Files/CMake/share/cmake-4.1/Modules/Platform/Windows.cmake"
   "C:/Program Files/CMake/share/cmake-4.1/Modules/Platform/WindowsPaths.cmake"
-  "D:/Desktop/zju/2025ADS/project 1/code/CMakeLists.txt"
+  "D:/Desktop/zju/2025ADS/project_1/code/CMakeLists.txt"
   "CMakeFiles/4.1.1/CMakeCCompiler.cmake"
   "CMakeFiles/4.1.1/CMakeRCCompiler.cmake"
   "CMakeFiles/4.1.1/CMakeSystem.cmake"
-  "D:/Desktop/zju/2025ADS/project 1/code/random_generator/CMakeLists.txt"
-  "D:/Desktop/zju/2025ADS/project 1/code/src/CMakeLists.txt"
+  "D:/Desktop/zju/2025ADS/project_1/code/random_generator/CMakeLists.txt"
+  "D:/Desktop/zju/2025ADS/project_1/code/src/CMakeLists.txt"
   )
 
 # The corresponding makefile is:

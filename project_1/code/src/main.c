@@ -38,28 +38,19 @@ void free_AVL(AVLNode* node) {
     free(node);
 }
 
-// Helper function to free Splay Tree
-void free_Splay(SplayNode* node) {
-    if (node == NULL) return;
-    free_Splay(node->left);
-    free_Splay(node->right);
-    free(node);
-}
 
 // Custom Splay tree insertion and deletion logic to fit the macro
 SplayNode* insert_Splay(SplayNode* root, int value) {
     SplayNode* newNode = createnode(value);
     root = insert(newNode, root);
-    splay(newNode, root);
-    root=newNode;
+    root = splay(newNode, root);
     return root;
 }
 
 SplayNode* delete_Splay(SplayNode* root, int value) {
     SplayNode* target = search(value, root);
     if (target) {
-        splay(target, root);
-        root = target;
+        root = splay(target, root);
         root = delete(root);
     }
     return root;
