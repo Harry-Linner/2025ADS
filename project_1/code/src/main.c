@@ -9,19 +9,22 @@
 
 // Macro to test insert and delete operations for a tree type
 // It now outputs directly to a single file in a standardized format
-#define TEST_INSERT_DELETE(tree_name_str, tree_type, root, insert_func, delete_func, values_arr, n, file, total_time) \
+#define TEST_INSERT_DELETE(tree_name_str, tree_type, root, insert_func, delete_func, values_arr, delete_arr, n, file, total_time) \
     clock_t start_time_##tree_type = clock(); \
-    for (int i = 0; i < n; i++) { \
-        root = insert_func(root, values_arr[i]); \
-    } \
-    for (int i = 0; i < n; i++) { \
-        root = delete_func(root, values_arr[i]); \
+    for (int repeat = 0; repeat < 100; repeat++) { \
+        root = NULL; \
+        for (int i = 0; i < n; i++) { \
+            root = insert_func(root, values_arr[i]); \
+        } \
+        for (int i = 0; i < n; i++) { \
+            root = delete_func(root, delete_arr[i]); \
+        } \
+        free_##tree_type(root); \
     } \
     clock_t end_time_##tree_type = clock(); \
-    total_time = (double)(end_time_##tree_type - start_time_##tree_type) / CLOCKS_PER_SEC; \
+    total_time = (double)(end_time_##tree_type - start_time_##tree_type) / CLOCKS_PER_SEC ; \
     fprintf(file, "%s,%d,%s,%f\n", tree_name_str, n, order_type, total_time); \
-    printf("Performance on %s with N=%d (%s): %f seconds\n", tree_name_str, n, order_type, total_time); \
-    free_##tree_type(root);
+    printf("Performance on %s with N=%d (%s): %f seconds\n", tree_name_str, n, order_type, total_time);
 
 // Helper function to free BST
 void free_BST(BSTNode* node) {
@@ -57,6 +60,15 @@ SplayNode* delete_Splay(SplayNode* root, int value) {
 }
 
 
+// 释放 Splay Tree 节点
+void free_Splay(SplayNode* node) {
+    if (node == NULL) return;
+    free_Splay(node->left);
+    free_Splay(node->right);
+    free(node);
+}
+
+
 int main(int argc, char *argv[]) {
     if (argc != 3) {
         fprintf(stderr, "Usage: %s <N> <order_type>\n", argv[0]);
@@ -83,23 +95,45 @@ int main(int argc, char *argv[]) {
     }
 
     int *tempArray = (int*)calloc(n, sizeof(int));
-    if (tempArray == NULL) {
+    int *deleteArray = (int*)calloc(n, sizeof(int)); // 新增
+    if (tempArray == NULL || deleteArray == NULL) {
         perror("Memory allocation failed");
         fclose(input_file);
+        free(tempArray);
+        free(deleteArray);
         return 1;
     }
     
     // Read data
     for (int i = 0; i < n; i++) {
         fscanf(input_file, "%d", tempArray + i);
+        deleteArray[i] = tempArray[i]; // 复制
     }
     fclose(input_file);
+
+    // 按 order_type 洗牌 deleteArray
+    if(strcmp(order_type, "dec") == 0) {
+        for(int i = 0; i < n / 2; i++) {
+            int temp = deleteArray[i];
+            deleteArray[i] = deleteArray[n - i - 1];
+            deleteArray[n - i - 1] = temp;
+        }
+    } else if(strcmp(order_type, "rand") == 0) {
+        srand(time(NULL));
+        for(int i = n - 1; i > 0; i--) {
+            int j = rand() % (i + 1);
+            int temp = deleteArray[i];
+            deleteArray[i] = deleteArray[j];
+            deleteArray[j] = temp;
+        }
+    }
 
     // Open the output file in append mode
     FILE *output_file = fopen("test_data/performance_results.txt", "a");
     if (output_file == NULL) {
         perror("Failed to open output file");
         free(tempArray);
+        free(deleteArray);
         return 1;
     }
 
@@ -107,17 +141,18 @@ int main(int argc, char *argv[]) {
 
     // 1. Test BST
     BSTNode *BSTroot = NULL;
-    TEST_INSERT_DELETE("BST", BST, BSTroot, insertBST, deleteBST, tempArray, n, output_file, total_time);
+    TEST_INSERT_DELETE("BST", BST, BSTroot, insertBST, deleteBST, tempArray, deleteArray, n, output_file, total_time);
 
     // 2. Test AVL Tree
     AVLNode *AVLroot = NULL;
-    TEST_INSERT_DELETE("AVL", AVL, AVLroot, insertAVL, deleteAVL, tempArray, n, output_file, total_time);
+    TEST_INSERT_DELETE("AVL", AVL, AVLroot, insertAVL, deleteAVL, tempArray, deleteArray, n, output_file, total_time);
     
     // 3. Test Splay Tree
-    // SplayNode *Splayroot = NULL;
-    // TEST_INSERT_DELETE("Splay", Splay, Splayroot, insert_Splay, delete_Splay, tempArray, n, output_file, total_time);
+    SplayNode *Splayroot = NULL;
+    TEST_INSERT_DELETE("Splay", Splay, Splayroot, insert_Splay, delete_Splay, tempArray, deleteArray, n, output_file, total_time);
 
     free(tempArray);
+    free(deleteArray);
     fclose(output_file);
 
     return 0;

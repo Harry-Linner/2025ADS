@@ -10,17 +10,17 @@ SplayNode *createnode(int k) {
     new->val = k;
     return new;
 }
-SplayNode *insert(SplayNode *newnode,SplayNode *root)
-{
-    if(root==NULL)
-    {
-      return newnode;
+SplayNode *insert(SplayNode *newnode, SplayNode *root) {
+    if (root == NULL) {
+        return newnode;
     }
-    newnode->parent=root;
-    if(newnode->val>root->val)
-      root->right=insert(newnode,root->right);
-    else if(newnode->val<root->val)
-      root->left=insert(newnode,root->left);
+    if (newnode->val > root->val) {
+        root->right = insert(newnode, root->right);
+        if (root->right) root->right->parent = root;
+    } else if (newnode->val < root->val) {
+        root->left = insert(newnode, root->left);
+        if (root->left) root->left->parent = root;
+    }
     return root;
 }
 
@@ -37,72 +37,69 @@ SplayNode *search(int k, SplayNode *root) {
     return NULL;
 }
 
-void rightrotate(SplayNode *root, SplayNode *newnode) {
-    SplayNode *nr = newnode->right;
-    if (root->parent) {
-        SplayNode *grandfather = root->parent;
-        if (grandfather->left == root) {
-            grandfather->left = newnode;
-            newnode->parent = grandfather;
-        } else if (grandfather->right == root) {
-            grandfather->right = newnode;
-            newnode->parent = grandfather;
-        }
-    } else {
-        newnode->parent = NULL;
+SplayNode* rightrotate(SplayNode* x) {
+    SplayNode* y = x->left;
+    if (!y) return x;
+    x->left = y->right;
+    if (y->right) y->right->parent = x;
+    y->parent = x->parent;
+    if (x->parent) {
+        if (x->parent->left == x)
+            x->parent->left = y;
+        else
+            x->parent->right = y;
     }
-    newnode->right = root;
-    root->parent = newnode;
-    root->left = nr;
-    if (nr)
-        nr->parent = root;
+    y->right = x;
+    x->parent = y;
+    return y;
 }
 
-void leftrotate(SplayNode *root, SplayNode *newnode) {
-    SplayNode *nl = newnode->left;
-    if (root->parent) {
-        SplayNode *grandfather = root->parent;
-        if (grandfather->left == root) {
-            grandfather->left = newnode;
-            newnode->parent = grandfather;
-        } else if (grandfather->right == root) {
-            grandfather->right = newnode;
-            newnode->parent = grandfather;
-        }
-    } else {
-        newnode->parent = NULL;
+SplayNode* leftrotate(SplayNode* x) {
+    SplayNode* y = x->right;
+    if (!y) return x;
+    x->right = y->left;
+    if (y->left) y->left->parent = x;
+    y->parent = x->parent;
+    if (x->parent) {
+        if (x->parent->left == x)
+            x->parent->left = y;
+        else
+            x->parent->right = y;
     }
-    newnode->left = root;
-    root->parent = newnode;
-    root->right = nl;
-    if (nl)
-        nl->parent = root;
+    y->left = x;
+    x->parent = y;
+    return y;
 }
 
-SplayNode* splay(SplayNode *newnode, SplayNode *root) {
-    while (newnode->parent != NULL) {
-        SplayNode *parent = newnode->parent;
-        SplayNode *grandparent = parent->parent;
-        if (grandparent == NULL) {
-            if (parent->left == newnode)
-                rightrotate(parent, newnode);
+SplayNode* splay(SplayNode* x, SplayNode* root) {
+    while (x->parent) {
+        SplayNode* p = x->parent;
+        SplayNode* g = p->parent;
+        if (!g) {
+            // Zig
+            if (p->left == x)
+                root = rightrotate(p);
             else
-                leftrotate(parent, newnode);
-        } else if (grandparent->left == parent && parent->left == newnode) {
-            rightrotate(grandparent, parent);
-            rightrotate(parent, newnode);
-        } else if (grandparent->right == parent && parent->right == newnode) {
-            leftrotate(grandparent, parent);
-            leftrotate(parent, newnode);
-        } else if (grandparent->left == parent && parent->right == newnode) {
-            leftrotate(parent, newnode);
-            rightrotate(grandparent, newnode);
-        } else if (grandparent->right == parent && parent->left == newnode) {
-            rightrotate(parent, newnode);
-            leftrotate(grandparent, newnode);
+                root = leftrotate(p);
+        } else if (g->left == p && p->left == x) {
+            // Zig-Zig
+            rightrotate(g);
+            root = rightrotate(p);
+        } else if (g->right == p && p->right == x) {
+            // Zig-Zig
+            leftrotate(g);
+            root = leftrotate(p);
+        } else if (g->left == p && p->right == x) {
+            // Zig-Zag
+            leftrotate(p);
+            root = rightrotate(g);
+        } else if (g->right == p && p->left == x) {
+            // Zig-Zag
+            rightrotate(p);
+            root = leftrotate(g);
         }
     }
-    return newnode;
+    return x;
 }
 
 SplayNode *findmax(SplayNode *root) {
