@@ -114,8 +114,8 @@ int main(int argc, char *argv[]) {
     TEST_INSERT_DELETE("AVL", AVL, AVLroot, insertAVL, deleteAVL, tempArray, n, output_file, total_time);
     
     // 3. Test Splay Tree
-    SplayNode *Splayroot = NULL;
-    TEST_INSERT_DELETE("Splay", Splay, Splayroot, insert_Splay, delete_Splay, tempArray, n, output_file, total_time);
+    // SplayNode *Splayroot = NULL;
+    // TEST_INSERT_DELETE("Splay", Splay, Splayroot, insert_Splay, delete_Splay, tempArray, n, output_file, total_time);
 
     free(tempArray);
     fclose(output_file);
