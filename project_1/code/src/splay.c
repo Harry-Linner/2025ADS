@@ -159,9 +159,9 @@ SplayNode * findmin(SplayNode *root)
       return findmin(root->left);
     return root;
 }
-SplayNode *delete(node *root)
+SplayNode *delete(SplayNode*root)
 {
-    SplayNode *max=(node*)malloc(sizeof(node));
+    SplayNode *max=(SplayNode*)malloc(sizeof(SplayNode));
   	max=findmax(root->left);
     if(max)
     {
@@ -180,7 +180,7 @@ SplayNode *delete(node *root)
 	    root->right->parent=max;
 	  return max;
     }
-    SplayNode *min=(SplayNode*)malloc(sizeof(node));
+    SplayNode *min=(SplayNode*)malloc(sizeof(SplayNode));
     min=findmin(root->right);
     if(min)
     {
