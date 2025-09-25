@@ -10,26 +10,17 @@ SplayNode *createnode(int k) {
     new->val = k;
     return new;
 }
-
-SplayNode *insert(SplayNode *newnode, SplayNode *root) {
-    SplayNode *parent = NULL;
-    SplayNode *cur = root;
-    while (cur) {
-        parent = cur;
-        if (newnode->val > cur->val)
-            cur = cur->right;
-        else if (newnode->val < cur->val)
-            cur = cur->left;
-        else
-            return root; // 不允许重复
+SplayNode *insert(SplayNode *newnode,SplayNode *root)
+{
+    if(root==NULL)
+    {
+      return newnode;
     }
-    newnode->parent = parent;
-    if (!parent)
-        return newnode;
-    if (newnode->val > parent->val)
-        parent->right = newnode;
-    else
-        parent->left = newnode;
+    newnode->parent=root;
+    if(newnode->val>root->val)
+      root->right=insert(newnode,root->right);
+    else if(newnode->val<root->val)
+      root->left=insert(newnode,root->left);
     return root;
 }
 
@@ -127,41 +118,34 @@ SplayNode *findmin(SplayNode *root) {
         root = root->left;
     return root;
 }
-
 SplayNode *delete(SplayNode *root) {
     if (root == NULL)
         return NULL;
-
-    SplayNode *left = root->left;
-    SplayNode *right = root->right;
-    root->left = root->right = root->parent = NULL;
+    
+    SplayNode *new_root = NULL;
+    
+    if (root->left) {
+        SplayNode *max = findmax(root->left);
+        splay(max, root->left);
+        new_root = root->left;
+        if (new_root) {
+            new_root->right = root->right;
+            if (root->right)
+                root->right->parent = new_root;
+        }
+    } else if (root->right) {
+        SplayNode *min = findmin(root->right);
+        splay(min, root->right);
+        new_root = root->right;
+        if (new_root) {
+            new_root->left = root->left;
+            if (root->left)
+                root->left->parent = new_root;
+        }
+    }
+    
     free(root);
-
-    if (!left) {
-        if (right) right->parent = NULL;
-        return right;
-    }
-    if (!right) {
-        left->parent = NULL;
-        return left;
-    }
-
-    // 两边都不空，左子树最大节点splay到根，再接上右子树
-    SplayNode *max = findmax(left);
-    left = splay(max, left);
-    left->right = right;
-    if (right) right->parent = left;
-    return left;
-}
-
-void free_Splay(SplayNode* node) {
-    if (node == NULL) return;
-    SplayNode *left = node->left;
-    SplayNode *right = node->right;
-    node->left = node->right = node->parent = NULL;
-    free(node);
-    free_Splay(left);
-    free_Splay(right);
+    return new_root;
 }
 
 void Traverse(SplayNode *root) {
@@ -169,4 +153,41 @@ void Traverse(SplayNode *root) {
     Traverse(root->left);
     printf("%d ", root->val);
     Traverse(root->right);
+    return ;
 }
+// int main()
+// {
+// 	int i;
+//     SplayNode *root=(SplayNode*)malloc(sizeof(SplayNode));
+//     SplayNode *newnode=(SplayNode*)malloc(sizeof(SplayNode));
+//     SplayNode *target=(SplayNode*)malloc(sizeof(SplayNode));
+//     SplayNode *target1=(SplayNode*)malloc(sizeof(SplayNode));
+//     root=NULL;
+//     newnode=NULL;
+//     int n,a[101];
+//     char operation[101];
+//     scanf("%d",&n);
+//     for(i=0;i<n;i++)
+//     {
+//       scanf("%d %c",&a[i],&operation[i]);      
+// 	  newnode=createnode(a[i]);
+//       if(operation[i]=='i')
+//       {
+//         root=insert(newnode,root);
+//         splay(newnode,root);
+//         root=newnode;
+//       //  Traverse(root);
+//       }
+//       else if(operation[i]=='d')
+//       {
+//       	target=search(a[i],root);
+//         splay(target,root);
+//         root=target;
+//        root=delete(root);
+//       //  Traverse(root);
+//       }
+//       target1=search(3,root);
+//     } 
+
+//     Traverse(root);
+// }
