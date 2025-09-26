@@ -18,50 +18,6 @@
 Here are the results of our experiments,for deletion type "inc","dec" and "rand":
 ## 测试结果表格
 
-### 递增数据 (inc) 性能表现（单位：秒）
-
-| 数据规模 | AVL    | BST     | Splay  |
-|---------|--------|---------|--------|
-| 1000    | 0.026  | 0.222   | 0.010  |
-| 2000    | 0.057  | 0.989   | 0.031  |
-| 3000    | 0.097  | 2.268   | 0.046  |
-| 4000    | 0.128  | 4.073   | 0.048  |
-| 5000    | 0.158  | 6.431   | 0.072  |
-| 6000    | 0.448  | 9.662   | 0.198  |
-| 7000    | 0.566  | 15.381  | 0.216  |
-| 8000    | 0.584  | 25.074  | 0.255  |
-| 9000    | 0.727  | 34.729  | 0.303  |
-| 10000   | 0.355  | 33.650  | 0.137  |
-
-### 递减数据 (dec) 性能表现（单位：秒）
-
-| 数据规模 | AVL    | BST     | Splay  |
-|---------|--------|---------|--------|
-| 1000    | 0.026  | 0.433   | 0.011  |
-| 2000    | 0.070  | 1.676   | 0.032  |
-| 3000    | 0.091  | 4.094   | 0.027  |
-| 4000    | 0.116  | 6.481   | 0.037  |
-| 5000    | 0.171  | 12.146  | 0.061  |
-| 6000    | 0.431  | 29.108  | 0.149  |
-| 7000    | 0.218  | 20.587  | 0.080  |
-| 8000    | 0.260  | 28.207  | 0.111  |
-| 9000    | 0.367  | 42.731  | 0.114  |
-| 10000   | 0.369  | 52.188  | 0.130  |
-
-### 随机数据 (rand) 性能表现（单位：秒）
-
-| 数据规模 | AVL    | BST    | Splay  |
-|---------|--------|--------|--------|
-| 1000    | 0.044  | 0.027  | 0.038  |
-| 2000    | 0.102  | 0.058  | 0.080  |
-| 3000    | 0.172  | 0.100  | 0.130  |
-| 4000    | 0.252  | 0.135  | 0.222  |
-| 5000    | 0.290  | 0.179  | 0.286  |
-| 6000    | 0.400  | 0.208  | 0.296  |
-| 7000    | 0.411  | 0.255  | 0.368  |
-| 8000    | 0.517  | 0.331  | 0.465  |
-| 9000    | 0.602  | 0.373  | 0.479  |
-| 10000   | 0.630  | 0.384  | 0.525  |
 ![alt text](image-1.png)
 ![alt text](image-2.png)
 ![alt text](image-3.png)
@@ -77,20 +33,19 @@ Here are the results of our experiments,for deletion type "inc","dec" and "rand"
 - For AVL tree and Splay tree,the time complexity of every insertion or deletion is O(log n),so totally its complexity is O(n log n).
 - Splay tree consistently performs better than AVL tree..
 - Analysis: 
-Splay tree Advantages:
-Each insertion/deletion in a Splay tree rotates the operated node to the root.For monotonic data,insertions and deletions are always concentrated on one side of the tree . The Splay tree keeps adjusting the most recently accessed node to the root, so subsequent operations are close to the root, requiring fewer rotations and resulting in faster speed.
-AVL Tree Disadvantages:
-Frequent Rotations: For monotonic data, the AVL tree needs frequent rotations to maintain balance. Each insertion/deletion requires updating balance factors and performing rotations,increasing the operation time.
+Splay tree Advantages compared with AVL tree:
+For monotonic data,insertions are concentrated on the left side of the tree,requiring fewer rotations and resulting in faster speed.AVL tree need frequent rotations to maintain balance,requiring more time. 
 
 
 ####  Decremental Data Performance
-- The same as Incremental Data Performance
-
+- Nearly the same as Incremental Data Performance
+- The decremental data of deletion makes Splay tree even more faster,because the tree just need to delete the root in every operaion.
 ####  Random Data Performance
 - All types of trees perform well,in which BST performs pretty excellent ,better than balanced trees.
 - Splay Tree performance is intermediate between BST and AVL
 - BST achieves its theoretical O(n log n) complexity
-
+- Analysis
+ Due to the randomness of the data, BST trees do not degenerate, so their simplicity makes them the fastest. Rules of AVL trees are the most strict.So AVL trees have the most frequent rotation operations. Splay have less rotation operations. Therefore, the required time for insertion and deletion: AVL > Splay > BST.
 **Theoretical vs. Observed Complexity:**
 
 | Tree Type | Data Distribution | Theoretical | Observed Behavior |
