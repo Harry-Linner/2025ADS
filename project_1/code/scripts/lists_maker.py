@@ -64,11 +64,23 @@ def plot_performance_data(file_path):
         plt.legend()
         plt.grid(True)
         
-        filename = f'performance_{order_type}.png'
-        save_path = os.path.join(output_dir, filename)
+        # 自动递增文件名
+        n = 1
+        while True:
+            filename = f'performance_{order_type}_{n}.png'
+            save_path = os.path.join(output_dir, filename)
+            if not os.path.exists(save_path):
+                break
+            n += 1
+
         plt.savefig(save_path)
         print(f"图表已保存到: {save_path}")
         plt.close() # 关闭当前图形，以避免内存问题
+
+    # 清空原始数据文件内容
+    with open(file_path, 'w') as f:
+        f.truncate(0)
+    print(f"已清空数据文件: {file_path}")
 
 # 使用相对路径指定文件位置
 file_path_to_plot = os.path.join('..', 'test_data', 'performance_results.txt')
