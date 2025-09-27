@@ -56,6 +56,9 @@ Here are the results of our experiments,for deletion type "inc","dec" and "rand"
 | 8000 | 0.355000 | 0.697000 | 0.555000 |
 | 9000 | 0.418000 | 0.817000 | 0.648000 |
 | 10000 | 0.496000 | 0.894000 | 0.689000 |
+
+
+
 ![alt text](image-1.png)
 ![alt text](image-2.png)
 ![alt text](image-3.png)
