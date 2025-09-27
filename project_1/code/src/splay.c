@@ -33,12 +33,12 @@ SplayNode *search(int k, SplayNode *root) {
     SplayNode *cur=root;
     while(cur) 
     {
-        if (cur->val==k)
+        if (cur->val==k)//find the target
             return cur;
         if (cur->val>k)
-            cur=cur->left;
+            cur=cur->left;//target in the left subtree
         else
-            cur=cur->right;
+            cur=cur->right;//target in the right subtree
     }
     return NULL;
 }
@@ -64,7 +64,7 @@ void rightrotate(SplayNode *root, SplayNode *newnode) //right rotate the child n
         newnode->parent=NULL;
     newnode->right=root;//change the parent-child relationship between root and newnode
     root->parent=newnode;
-    root->left=nr;//establish the parent-child relationship between root and previous newnode->right
+    root->left=nr;//establish the parent-child relationship between root and previous newnode's right son
     if(nr)
         nr->parent=root;
 }
@@ -90,7 +90,7 @@ void leftrotate(SplayNode *root, SplayNode *newnode)//left rotate the child node
         newnode->parent=NULL;
     newnode->left=root;//change the parent-child relationship between root and newnode
     root->parent=newnode;
-    root->right=nl;//establish the parent-child relationship between root and previous newnode->left
+    root->right=nl;//establish the parent-child relationship between root and previous newnode's left son
     if(nl)
         nl->parent=root;
 }
@@ -157,7 +157,7 @@ SplayNode *delete(SplayNode *root) //delete the node whose value is k
     {
         SplayNode *max=findmax(root->left);//find the maximum value in the left subtree
         new_root=splay(max, root->left);//splay the max node to the root's left son
-        new_root->right=root->right;
+        new_root->right=root->right;//establish the parent-child relationship between new_root and previous root's right son
         if(root->right)
             root->right->parent=new_root;
         new_root->parent=NULL;
