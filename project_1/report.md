@@ -16,7 +16,7 @@
 - For each tree type, we performed insertions and deletions.Three types of orders are considered: "inc" for increasing order, "dec" for decreasing order, and "rand" for random order.We achieve this by reversing and shuffling the input data in "main.c".## 2.1 Experiments Results
 -Considering that AVL Tree and Splay Tree both perform well with short execution time of insertions and deletions,we repeated the experiments 100 times for each tree type,in order to get a more accurate result.
 Here are the results of our experiments,for deletion type "inc","dec" and "rand":
-## 测试结果表格
+## 2.2 Tables and Graphs of results 
 ####  Incremental Data Performance
 | 数据规模(N) | BST运行时间(s) | AVL运行时间(s) | Splay运行时间(s) |
 |---|---|---|---|
@@ -59,12 +59,6 @@ Here are the results of our experiments,for deletion type "inc","dec" and "rand"
 ![alt text](image-1.png)
 ![alt text](image-2.png)
 ![alt text](image-3.png)
-### 2.2.1 Unbalanced Binary Search Tree
-- Unbalanced Binary Search Trees have poor performance in many scenarios, especially when there are many insertions or deletions.
-### 2.2.2 AVL Tree
-
-### 2.2.3 Splay Tree
-
 ## 2.3 Performance Evaluation & Analysis
 ####  Incremental Data Performance
 - BST performs terribly bad. With incremental data,this tree has degenerated into a linear chain.The time complexity of every insertion or deletion is O(n),so totally its complexity is O(n²).
@@ -79,9 +73,9 @@ For monotonic data,insertions are concentrated on the left side of the tree,requ
 - Nearly the same as Incremental Data Performance
 - The decremental data of deletion makes Splay tree even more faster,because the tree just need to delete the root in every operaion.
 ####  Random Data Performance
-- All types of trees perform well,in which BST performs pretty excellent ,better than balanced trees.
-- Splay Tree performance is intermediate between BST and AVL
 - BST achieves its theoretical O(n log n) complexity
+- All types of trees perform well,in which BST performs pretty excellent,better than balanced trees.
+- Splay Tree is faster than AVL
 - Analysis
  Due to the randomness of the data, BST trees do not degenerate, so their simplicity makes them the fastest. Rules of AVL trees are the most strict.So AVL trees have the most frequent rotation operations. Splay have less rotation operations. Therefore, the required time for insertion and deletion: AVL > Splay > BST.
 **Theoretical vs. Observed Complexity:**
@@ -96,3 +90,181 @@ For monotonic data,insertions are concentrated on the left side of the tree,requ
 - There are many methods to address tree imbalance and inefficiencies in different operations. In our experiment, AVL Trees and Splay Trees show better performance compared to unbalanced binary search trees.
 - However, each method has disadvantages. For instance, AVL Trees require frequent rotations to maintain balance, which means the time cost can be considerable when  there are multiple insertions or deletions. Splay Trees, while efficient in some cases, may have poor worst-case performance when elements are inserted in a specific order (increasing order for example).
 - Therefore, no single algorithm is perfect for all cases. The choice of data structure should depend on the specific use case, and it's essential to understand the problem features to select the most suitable balancing strategy.
+# Appendix:Source Code in C
+## Splay Tree:
+```c
+SplayNode *createnode(int k) //initialize a tree whose val is k
+{
+    SplayNode *new=(SplayNode *)malloc(sizeof(SplayNode));
+    new->left=NULL;
+    new->right=NULL;
+    new->parent=NULL;
+    new->val=k;
+    return new;
+}
+SplayNode *insert(SplayNode *newnode,SplayNode *root) //insert a new node following the rule of BST
+{
+    if(root==NULL)
+      return newnode;
+    if(newnode->val>root->val) 
+    {
+      root->right=insert(newnode,root->right);//insert to the right subtree,using recursion
+      if(root->right) //avoid that root->right==NULL;
+        root->right->parent=root;//establish the parent-child relationship
+    } 
+    else if(newnode->val<root->val) 
+    {
+      root->left=insert(newnode,root->left);//insert to the left subtree,using recursion
+      if(root->left)//root->right==NULL;
+        root->left->parent=root;//establish the parent-child relationship
+    }
+    return root;
+}
+SplayNode *search(int k, SplayNode *root) {
+    SplayNode *cur=root;
+    while(cur) 
+    {
+        if (cur->val==k)//find the target
+            return cur;
+        if (cur->val>k)
+            cur=cur->left;//target in the left subtree
+        else
+            cur=cur->right;//target in the right subtree
+    }
+    return NULL;
+}
+
+void rightrotate(SplayNode *root, SplayNode *newnode) //right rotate the child node 
+{
+    SplayNode *nr=newnode->right;//record the previous newnode->right
+    if (root->parent) //if root has a parent,establish the parent-child relationship between grandparent and newnode
+    {
+        SplayNode *grandfather=root->parent;
+        if (grandfather->left==root) 
+        {
+            grandfather->left=newnode;
+            newnode->parent=grandfather;
+        } 
+        else if (grandfather->right==root) 
+        {
+            grandfather->right=newnode;
+            newnode->parent=grandfather;
+        }
+    } 
+    else //the parent node is exactly the root
+        newnode->parent=NULL;
+    newnode->right=root;//change the parent-child relationship between root and newnode
+    root->parent=newnode;
+    root->left=nr;//establish the parent-child relationship between root and previous newnode's right son
+    if(nr)
+        nr->parent=root;
+}
+
+void leftrotate(SplayNode *root, SplayNode *newnode)//left rotate the child node 
+{
+    SplayNode *nl=newnode->left;//record the previous newnode->left
+    if(root->parent) //if root has a parent,establish the parent-child relationship between grandparent and newnode
+    {
+        SplayNode *grandfather=root->parent;
+        if(grandfather->left==root) 
+        {
+            grandfather->left=newnode;
+            newnode->parent=grandfather;
+        } 
+        else if(grandfather->right==root) 
+        {
+            grandfather->right=newnode;
+            newnode->parent=grandfather;
+        }
+    } 
+    else //the parent node is exactly the root
+        newnode->parent=NULL;
+    newnode->left=root;//change the parent-child relationship between root and newnode
+    root->parent=newnode;
+    root->right=nl;//establish the parent-child relationship between root and previous newnode's left son
+    if(nl)
+        nl->parent=root;
+}
+SplayNode* splay(SplayNode *newnode, SplayNode *root) 
+{
+    while(newnode->parent!=NULL) 
+    {
+        SplayNode *parent=newnode->parent;
+        SplayNode *grandparent=parent->parent;
+        if (grandparent==NULL) //newnode is the son of root;
+        {
+            if (parent->left==newnode)
+                rightrotate(parent,newnode);
+            else
+                leftrotate(parent,newnode);
+        } 
+        else if(grandparent->left==parent&&parent->left==newnode) //case "zig-zig"
+        {
+            rightrotate(grandparent,parent);//first rotate the parent node
+            rightrotate(parent,newnode);//then rotate newnode 
+        } 
+        else if(grandparent->right==parent&&parent->right==newnode) //case "zig-zig"
+        {
+            leftrotate(grandparent,parent);//first rotate the parent node
+            leftrotate(parent,newnode);//then rotate newnode 
+        } 
+        else if(grandparent->left==parent&&parent->right==newnode) //case "zig-zag"
+        {
+            leftrotate(parent,newnode);//rotate the newnode node
+            rightrotate(grandparent,newnode);//rotate newnode again
+        } 
+        else if(grandparent->right==parent&&parent->left==newnode) //case "zig-zag"
+        {
+            rightrotate(parent,newnode);//rotate the newnode
+            leftrotate(grandparent,newnode);//rotate newnode again
+        }
+    }
+    return newnode;
+}
+
+SplayNode *findmax(SplayNode *root) //according to the rule of BST,the maximum value is at the rightmost position
+{
+    if (!root) 
+        return NULL;
+    while(root->right)
+        root=root->right;
+    return root;
+}
+
+SplayNode *findmin(SplayNode *root) //according to the rule of BST,the minimum value is at the leftmost position
+{
+    if(!root) 
+        return NULL;
+    while (root->left)
+        root=root->left;
+    return root;
+}
+SplayNode *delete(SplayNode *root) //delete the node whose value is k
+{
+    if(root==NULL)
+        return NULL;
+    SplayNode *new_root=NULL;
+    if (root->left&&root->right) // if the root has both left subtree and right subtree
+    {
+        SplayNode *max=findmax(root->left);//find the maximum value in the left subtree
+        new_root=splay(max, root->left);//splay the max node to the root's left son
+        new_root->right=root->right;//establish the parent-child relationship between new_root and previous root's right son
+        if(root->right)
+            root->right->parent=new_root;
+        new_root->parent=NULL;
+    } 
+    else if(root->left) //if the root has only left subtree
+    {
+        new_root=root->left;
+        new_root->parent=NULL;
+    } 
+    else if(root->right) //if the root has only right subtree
+    {
+        new_root=root->right;
+        new_root->parent=NULL;
+    }
+    
+    free(root);
+    return new_root;
+}
+```
