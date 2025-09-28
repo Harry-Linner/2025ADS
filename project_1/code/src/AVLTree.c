@@ -55,6 +55,7 @@ AVLNode* deleteAVL(AVLNode* node, int value)
         node->left = deleteAVL(node->left, value);
     } else if (value > node->val) {
         node->right = deleteAVL(node->right, value);
+        //in these two cases, we recursively delete the AVL in the subtree
     } else {
         //this is the case where the node to be deleted is found
         if (node->left == NULL && node->right == NULL) {
@@ -72,6 +73,7 @@ AVLNode* deleteAVL(AVLNode* node, int value)
             int minRight = minVal(node->right);
             node->val = minRight;
             node->right = deleteAVL(node->right, minRight);
+            //if there are two subtrees, then we find the minimum node in the right subtree.
         }
     }
     //we need to process the inbalance issues
@@ -107,7 +109,7 @@ AVLNode* rebalanceAVL(AVLNode* node)
     node->height = getHeight(node);
     int currBF = getBF(node);
     if (currBF == -2) {
-        //left side is shorter
+        //the height of the left side is shorter
         if (getBF(node->right) < 0) {
             //this is the RR case
             node = leftRotate(node);
@@ -144,18 +146,21 @@ int getHeight(AVLNode* node)
         } else {
             leftHeight = node->left->height;
         }
+        //safely get the left height
 
         if (node->right == NULL) {
             rightHeight = -1;
         } else {
             rightHeight = node->right->height;
         }
+        //safely get the right height
     }
     if (leftHeight > rightHeight) {
         return 1 + leftHeight;
     } else {
         return 1 + rightHeight;
     }
+    //get the higher height
 }
 
 int getBF(AVLNode* node)
@@ -174,6 +179,7 @@ int getBF(AVLNode* node)
     } else {
         rightHeight = node->right->height;
     }
+    //the get height method is the same as which is in the getHeight() function
     return leftHeight - rightHeight;
 }
 
@@ -184,4 +190,5 @@ int minVal(AVLNode* node)
     } else {
         return minVal(node->left);
     }
+    //find the min value in the designated subtree
 }
