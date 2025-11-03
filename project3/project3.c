@@ -28,20 +28,16 @@ void dfs(int num, int step, struct answer *t, struct answer *ans)
       }
       return;
     }
-    
     //traverse the candidate fruit of the current layer
     for(int i = 0; i < num; i++)
     {
       int k = Stack[step][i];
-      
-     //even if all the fruits numbered from i to num are selected, they cannot surpass the best answer
+      //even if all the fruits numbered from i to num are selected, they cannot surpass the best answer
       if(t->s+num-i<ans->s)
         return;
-      
       //pruning 2: use dp value to prune more precisely
       if(t->s + dp[k]<ans->s)
         return;
-      
       // build the candidate set for the next layer: select the fruits that do not conflict with k from the remaining candidates
       int cnt = 0;
       for(int j=i+1;j<num; j++)
@@ -94,24 +90,21 @@ int main()
     for(int i=m;i>=1;i--)
       {
       // build the first layer candidate set: all fruits with ID greater than i
-      int sz = 0;
-      for(int j = i+1; j <= m; j++)
+      int s=0;
+      for(int j=i+1;j<=m;j++)
       {
       //  printf("a[%d][%d]=%d\n",i,j,a[i][j]);
-        if(a[i][j] == 0)
-          Stack[2][sz++] = j;
+        if(a[i][j]==0)
+          Stack[2][s++]=j;
       }
       
       // choose fruit i as the starting point
       t->list[++t->s] = i;
-      t->price += prices[i];
-      
-      dfs(sz, 2, t, ans);
-      
+      t->price+=prices[i];
+      dfs(s,2,t,ans);
       // backtrack
       t->s--;
-      t->price -= prices[i];
-      
+      t->price-=prices[i];
       dp[i] = ans->s;//record the max length of path after i-th point,in order for pruning
     }
     printf("%d\n",ans->s);
