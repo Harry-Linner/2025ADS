@@ -4,59 +4,59 @@
 
 ### 1.1 Project Reaction
 
-Many dietary rules stipulate that certain fruits cannot be consumed together,as this can lead to adverse health effects (e.g., the conflict between bananas and cantaloupes).
+&nbsp;&nbsp;&nbsp;&nbsp;Many dietary rules stipulate that certain fruits cannot be consumed together,as this can lead to adverse health effects (e.g., the conflict between bananas and cantaloupes).
 
-Select the largest quantity of mutually non-conflicting fruits from a basket. If multiple sets have the maximum quantity, the secondary goal is to select the set with the minimum total price.
+&nbsp;&nbsp;&nbsp;&nbsp;Select the largest quantity of mutually non-conflicting fruits from a basket. If multiple sets have the maximum quantity, the secondary goal is to select the set with the minimum total price.
 
-The input includes the number of conflicts $N$, the number of fruits $M$, a list of conflict pairs, and a list of fruit prices.The required output includes the maximum quantity, the list of fruit IDs, and the total price.
+&nbsp;&nbsp;&nbsp;&nbsp;The input includes the number of conflicts $N$, the number of fruits $M$, a list of conflict pairs, and a list of fruit prices.The required output includes the maximum quantity, the list of fruit IDs, and the total price.
 
 ### 1.2 Problem Modeling and Model Transformation
 
-Each fruit is abstracted as a vertex in a graph, and every conflicting pair of fruits is abstracted as an edge. Solving the "Maximum Safe Fruit Set" problem is transformed into solving the Maximum Independent Set (MIS) problem on the graph, with the additional optimization constraint of minimizing the total price. Given that the Maximum Independent Set problem is NP-Hard, an efficient Backtracking Search (Depth First Search) combined with pruning strategies is employed for the solution.
+&nbsp;&nbsp;&nbsp;&nbsp;Each fruit is abstracted as a vertex in a graph, and every conflicting pair of fruits is abstracted as an edge. Solving the "Maximum Safe Fruit Set" problem is transformed into solving the Maximum Independent Set (MIS) problem on the graph, with the additional optimization constraint of minimizing the total price. Given that the Maximum Independent Set problem is NP-Hard, an efficient Backtracking Search (Depth First Search) combined with pruning strategies is employed for the solution.
 
 ### 1.3 Computational Challenges and Solutions
 
-For cases where the number of fruits $M$ is large (e.g., $M > 80$), the algorithm's runtime grows exponentially, making it difficult to find a solution within a short time. Therefore, more useful pruning and preprocessing techniques must be introduced to the basic backtracking search to significantly improve search efficiency.
+&nbsp;&nbsp;&nbsp;&nbsp;For cases where the number of fruits $M$ is large (e.g., $M > 80$), the algorithm's runtime grows exponentially, making it difficult to find a solution within a short time. Therefore, more useful pruning and preprocessing techniques must be introduced to the basic backtracking search to significantly improve search efficiency.
 
 ## 2. Core Algorithm Design and Implementation
 
 ### 2.1 DFS-based Backtracking Framework
 
-The problem is solved using a recursive Depth First Search (dfs) function, which implements the core backtracking logic to explore all possible independent sets.
+&nbsp;&nbsp;&nbsp;&nbsp;The problem is solved using a recursive Depth First Search (dfs) function, which implements the core backtracking logic to explore all possible independent sets.
 
-The `dfs` function takes the size of the candidate set ($num$), the current search depth ($step$), the temporary solution path ($t$), and the global best answer ($ans$) as parameters. The $Stack[step]$ array stores the actual candidate fruit IDs for the current layer. The core logic involves a loop that iterates through the candidates $i=0$ to $num-1$. In each iteration, the fruit $k = Stack[step][i]$ is selected, added to the current path ($t$), and its price is accumulated. To prepare for the next step, a new candidate set is constructed in Stack[step+1] by including only those remaining candidates $j$ (where $j > i$) that do not conflict with the chosen fruit $k$ (i.e., $a[k][Stack[step][j]] == 0$). The function then recursively calls `dfs`, passing the count of these non-conflicting candidates ($cnt$) as the num argument. Finally, a standard backtracking step removes $k$ from the path ($t$) and reverts the price change.
+&nbsp;&nbsp;&nbsp;&nbsp;The `dfs` function takes the size of the candidate set ($num$), the current search depth ($step$), the temporary solution path ($t$), and the global best answer ($ans$) as parameters. The $Stack[step]$ array stores the actual candidate fruit IDs for the current layer. The core logic involves a loop that iterates through the candidates $i=0$ to $num-1$. In each iteration, the fruit $k = Stack[step][i]$ is selected, added to the current path ($t$), and its price is accumulated. To prepare for the next step, a new candidate set is constructed in Stack[step+1] by including only those remaining candidates $j$ (where $j > i$) that do not conflict with the chosen fruit $k$ (i.e., $a[k][Stack[step][j]] == 0$). The function then recursively calls `dfs`, passing the count of these non-conflicting candidates ($cnt$) as the num argument. Finally, a standard backtracking step removes $k$ from the path ($t$) and reverts the price change.
 
-The solution must satisfy two criteria: maximize quantity and minimize price. When a recursion branch terminates ($num == 0$), the temporary solution t is checked against the global best solution ans. The update rule prioritizes quantity: if $t.s > ans.s$, ans is updated. If $t.s == ans.s$, ans is only updated if $t.price < ans.price$. This check ensures the final result adheres to the strict output specification.
+&nbsp;&nbsp;&nbsp;&nbsp;The solution must satisfy two criteria: maximize quantity and minimize price. When a recursion branch terminates ($num == 0$), the temporary solution t is checked against the global best solution ans. The update rule prioritizes quantity: if $t.s > ans.s$, ans is updated. If $t.s == ans.s$, ans is only updated if $t.price < ans.price$. This check ensures the final result adheres to the strict output specification.
 
 ### 2.2 Key Algorithm Optimization: DP Preprocessing and Pruning
 
-Due to the exponential nature of the Maximum Independent Set problem, two crucial pruning strategies are implemented within the dfs function to limit the search space.
+&nbsp;&nbsp;&nbsp;&nbsp;Due to the exponential nature of the Maximum Independent Set problem, two crucial pruning strategies are implemented within the dfs function to limit the search space.
 
-A one-dimensional array dp is pre-computed in the main function iteratively from $M$ down to $1$. For a given fruit ID $i$, $dp[i]$ stores the length of the maximum independent set that can be formed using only fruits with ID greater than or equal to $i$. This value provides an aggressive upper bound on the potential solution size for any branch starting at fruit $i$.
+&nbsp;&nbsp;&nbsp;&nbsp;A one-dimensional array dp is pre-computed in the main function iteratively from $M$ down to $1$. For a given fruit ID $i$, $dp[i]$ stores the length of the maximum independent set that can be formed using only fruits with ID greater than or equal to $i$. This value provides an aggressive upper bound on the potential solution size for any branch starting at fruit $i$.
 
-Maximum Length Pruning: This is a basic pruning check applied at the start of the candidate loop. The condition if ($t->s + num - i < ans->s$) return; is used. If the size of the set currently selected ($t.s$) plus the total number of remaining candidates in the current layer ($num - i$) is less than the current optimal size ($ans.s$), the current search branch is guaranteed not to yield a better result, and the function immediately returns.
+&nbsp;&nbsp;&nbsp;&nbsp;Maximum Length Pruning: This is a basic pruning check applied at the start of the candidate loop. The condition if ($t->s + num - i < ans->s$) return; is used. If the size of the set currently selected ($t.s$) plus the total number of remaining candidates in the current layer ($num - i$) is less than the current optimal size ($ans.s$), the current search branch is guaranteed not to yield a better result, and the function immediately returns.
 
-Precise Pruning based on DP Values: This is an pruning technique using the pre-calculated dp values. The condition checked is if ($t->s + dp[k] < ans->s$) return;. If the size of the set already chosen ($t.s$) combined with the absolute maximum possible size of any independent set starting from fruit $k$ ($dp[k]$) cannot surpass the current global best count, the branch is immediately terminated. This DP-based lookahead significantly enhances the effectiveness of the search.
+&nbsp;&nbsp;&nbsp;&nbsp;Precise Pruning based on DP Values: This is an pruning technique using the pre-calculated dp values. The condition checked is if ($t->s + dp[k] < ans->s$) return;. If the size of the set already chosen ($t.s$) combined with the absolute maximum possible size of any independent set starting from fruit $k$ ($dp[k]$) cannot surpass the current global best count, the branch is immediately terminated. This DP-based lookahead significantly enhances the effectiveness of the search.
 
 ## 3. Performance Testing and Results Analysis
 
 ### 3.1 Experimental Setup and Testing Methodology
 
-Test cases were dynamically generated using the auxiliary program `project3_randominput.c`. This program ensures that conflict pairs ($N$) and fruit prices are randomly distributed within the specified constraints, providing a diverse set of scenarios for evaluation.
+&nbsp;&nbsp;&nbsp;&nbsp;Test cases were dynamically generated using the auxiliary program `project3_randominput.c`. This program ensures that conflict pairs ($N$) and fruit prices are randomly distributed within the specified constraints, providing a diverse set of scenarios for evaluation.
 
-Testing focused on verifying the correctness of solutions across various scales. Critical test scales included regular-sized problems where $M \le 80$, and extreme cases designed to push the limits of the backtracking search, such as $M=85, 90, 95,$ and $100$.(The test cases (generated using `project3_randominput.c`) have been placed under `/test`.)
+&nbsp;&nbsp;&nbsp;&nbsp;Testing focused on verifying the correctness of solutions across various scales. Critical test scales included regular-sized problems where $M \le 80$, and extreme cases designed to push the limits of the backtracking search, such as $M=85, 90, 95,$ and $100$.(The test cases (generated using `project3_randominput.c`) have been placed under `/test`.)
 
 ### 3.2 Results Presentation and Analysis
 
-The analysis confirms that the output set is consistently the guaranteed unique optimal solution. This is verified by ensuring the set meets the strict criteria: (1) maximum possible fruit quantity, and (2) the lowest total price among all sets with that maximum quantity, validating the core optimization logic of the DFS update rule.
+&nbsp;&nbsp;&nbsp;&nbsp;The analysis confirms that the output set is consistently the guaranteed unique optimal solution. This is verified by ensuring the set meets the strict criteria: (1) maximum possible fruit quantity, and (2) the lowest total price among all sets with that maximum quantity, validating the core optimization logic of the DFS update rule.
 
-The analysis confirms the necessity of the DP preprocessing and pruning strategies. For large and complex test cases (e.g., $M=100$), the pruning is essential for reducing the search space to a feasible size, allowing the program to exhaustively search and find the unique optimal solution in a reasonable time. This successful completion of complex tests validates the crucial role of the optimization in making the exact solution possible.
+&nbsp;&nbsp;&nbsp;&nbsp;The analysis confirms the necessity of the DP preprocessing and pruning strategies. For large and complex test cases (e.g., $M=100$), the pruning is essential for reducing the search space to a feasible size, allowing the program to exhaustively search and find the unique optimal solution in a reasonable time. This successful completion of complex tests validates the crucial role of the optimization in making the exact solution possible.
 
 ## 4. Conclusion and Future Work
 
-Summarize the project achievements, confirming the successful implementation of the MIS solver that satisfies the dual optimization objectives and demonstrates good performance on conventional scales ($M \le 80$).
+&nbsp;&nbsp;&nbsp;&nbsp;Summarize the project achievements, confirming the successful implementation of the MIS solver that satisfies the dual optimization objectives and demonstrates good performance on conventional scales ($M \le 80$).
 
-Address the performance limitations for large $M$ by proposing further optimization directions, such as: introducing more sophisticated heuristic strategies, exploring branch and bound methods, or investigating approximation algorithms to find near-optimal solutions in less time.
+&nbsp;&nbsp;&nbsp;&nbsp;Address the performance limitations for large $M$ by proposing further optimization directions, such as: introducing more sophisticated heuristic strategies, exploring branch and bound methods, or investigating approximation algorithms to find near-optimal solutions in less time.
 
 ## Appendix: Core Code Listing
 
