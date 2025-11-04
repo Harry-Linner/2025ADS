@@ -26,7 +26,7 @@
 
 &nbsp;&nbsp;&nbsp;&nbsp;The `dfs` function takes the size of the candidate set ($num$), the current search depth ($step$), the temporary solution path ($t$), and the global best answer ($ans$) as parameters. The $Stack[step]$ array stores the actual candidate fruit IDs for the current layer. The core logic involves a loop that iterates through the candidates $i=0$ to $num-1$. In each iteration, the fruit $k = Stack[step][i]$ is selected, added to the current path ($t$), and its price is accumulated. To prepare for the next step, a new candidate set is constructed in Stack[step+1] by including only those remaining candidates $j$ (where $j > i$) that do not conflict with the chosen fruit $k$ (i.e., $a[k][Stack[step][j]] == 0$). The function then recursively calls `dfs`, passing the count of these non-conflicting candidates ($cnt$) as the num argument. Finally, a standard backtracking step removes $k$ from the path ($t$) and reverts the price change.
 
-&nbsp;&nbsp;&nbsp;&nbsp;The solution must satisfy two criteria: maximize quantity and minimize price. When a recursion branch terminates ($num == 0$), the temporary solution t is checked against the global best solution ans. The update rule prioritizes quantity: if $t.s > ans.s$, ans is updated. If $t.s == ans.s$, ans is only updated if $t.price < ans.price$. This check ensures the final result adheres to the strict output specification.
+&nbsp;&nbsp;&nbsp;&nbsp; When a recursion branch terminates ($num == 0$), the temporary solution t is checked against the global best solution ans. The update rule prioritizes quantity: if $t.s > ans.s$, ans is updated. If $t.s == ans.s$, ans is only updated if $t.price < ans.price$. 
 
 ### 2.2 Key Algorithm Optimization: DP Preprocessing and Pruning
 
@@ -46,9 +46,10 @@
 
 &nbsp;&nbsp;&nbsp;&nbsp;Testing focused on verifying the correctness of solutions across various scales. Critical test scales included regular-sized problems where $M \le 80$, and extreme cases designed to push the limits of the backtracking search, such as $M=85, 90, 95,$ and $100$.(The test cases (generated using `project3_randominput.c`) have been placed under `/test`.)
 
-### 3.2 Results Presentation and Analysis
 
-&nbsp;&nbsp;&nbsp;&nbsp;The analysis confirms that the output set is consistently the guaranteed unique optimal solution. This is verified by ensuring the set meets the strict criteria: (1) maximum possible fruit quantity, and (2) the lowest total price among all sets with that maximum quantity, validating the core optimization logic of the DFS update rule.
+&nbsp;&nbsp;Test results show that:when M <= 80, the program can quickly produce results for data where 1 <= N <= 100.When M > 80, taking M = 85, 90, 95, 100 with corresponding N values of 75, 40, 25 and 25 respectively, the program can still produce results relatively quickly. However, when the corresponding N values are 80, 50, 30 and 30 respectively, it takes much longer time to obtain the results. If N were to increase further, the runtime would become excessively long and hard to get results.
+
+### 3.2 Results Presentation and Analysis
 
 &nbsp;&nbsp;&nbsp;&nbsp;The analysis confirms the necessity of the DP preprocessing and pruning strategies. For large and complex test cases (e.g., $M=100$), the pruning is essential for reducing the search space to a feasible size, allowing the program to exhaustively search and find the unique optimal solution in a reasonable time. This successful completion of complex tests validates the crucial role of the optimization in making the exact solution possible.
 
