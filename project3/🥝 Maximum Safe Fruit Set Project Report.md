@@ -49,6 +49,7 @@
 
 ### 3.2 Results Presentation and Analysis
 &nbsp;&nbsp;Test results show that:when M <= 80, the program can quickly produce results for data where 1 <= N <= 100.When M > 80, taking M = 85, 90, 95, 100 with corresponding N values of 75, 40, 25 and 25 respectively, the program can still produce results relatively quickly. However, when the corresponding N values are 80, 50, 30 and 30 respectively, it takes much longer time to obtain the results. If N were to increase further, the runtime would become excessively long and hard to get results.
+
 &nbsp;&nbsp;&nbsp;&nbsp;The analysis confirms the necessity of the DP preprocessing and pruning strategies. For large and complex test cases (e.g., $M=100$), the pruning is essential for reducing the search space to a feasible size, allowing the program to exhaustively search and find the unique optimal solution in a reasonable time. This successful completion of complex tests validates the crucial role of the optimization in making the exact solution possible.
 
 ## 4. Conclusion and Future Work
