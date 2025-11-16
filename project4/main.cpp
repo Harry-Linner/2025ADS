@@ -26,8 +26,8 @@ vector<int> num;
 
 void init () {
 
-    F.resize(n);
-    T.resize(n);
+    F.resize(n + 1);
+    T.resize(n + 1);
     for (int i = 0; i <= n; i++) {
         F[i].resize(max_amount + 2, 0);
         T[i].resize(max_amount + 2, 0);
