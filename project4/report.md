@@ -134,11 +134,11 @@ if (delta_max <= m) {
 
 ### 3.1 Time Complexity Verification
 
-![Time vs $n$ for different $m$](parameter_analysis_charts/time_by_n_for_different_m.png)
+![Execution Time for Different $n$ and $m$ Values](parameter_analysis_charts/time_by_n_for_different_m.png)
 
 &nbsp;&nbsp;&nbsp;&nbsp;Here we can discover that the smaller $m$ is, the longer the execution time is. And the larger the data size is, the longer the execution time is. 
 
-&nbsp;&nbsp;&nbsp;&nbsp;Execution time decreases as $m$ increases, validating the $n^2/m$ relationship. Larger $n$ values show more pronounced sensitivity to $m$.
+&nbsp;&nbsp;&nbsp;&nbsp;Execution time decreases as $m$ increases, consistent with the theoretical complexity where max_amount is inversely proportional to $m$. Larger $n$ values show more pronounced sensitivity to $m$.
 
 ### 3.2 Algorithm Comparison
 
@@ -147,6 +147,8 @@ if (delta_max <= m) {
 ![DP vs Brute Force Time Comparison](parameter_analysis_charts/dp_vs_brute_force_time_comparison.png)
 
 &nbsp;&nbsp;&nbsp;&nbsp;We can discover that for the same parameter **$m$**, the longer the Brute Force algorithm showcases the asymptotic performance of an exponential function, and our DP algorithm performs much better than the Brute Force algorithm, especially with larger $m$.
+
+&nbsp;&nbsp;&nbsp;&nbsp;**Note**: When $n$ reaches several tens, the brute force algorithm's execution time already far exceeds that of our DP algorithm. As $n$ continues to increase, brute force rapidly exceeds practical time limits. Therefore, we do not display brute force timing for large $n$ values in the charts.
 
 ![DP vs Brute Force (max $n=12$)](parameter_analysis_charts/dp_vs_brute_force_max_n_12.png)
 
@@ -174,9 +176,9 @@ if (delta_max <= m) {
 
 ## 4. Conclusions and Further Improvements
 
-Our DP solution efficiently solves the problem with a time complexity of $O(\lfloor(max-min)/m\rfloor \times n \times \log n)$, performing better than brute-force methods. It handles large inputs up to $n = 10^5$ and is validated by experimental results.
+&nbsp;&nbsp;&nbsp;&nbsp;Our DP solution efficiently solves the problem with a time complexity of $O(\lfloor(max-min)/m\rfloor \times n \times \log n)$, performing better than brute-force methods. It handles large inputs up to $n = 10^5$ and is validated by experimental results.
 
-Future improvements could focus on memory optimization through methods like rolling arrays, and exploring alternative data structures or other state representation ways for further performance enhancements.
+&nbsp;&nbsp;&nbsp;&nbsp;Future improvements could focus on memory optimization through methods like rolling arrays, and exploring alternative data structures or other state representation ways for further performance enhancements.
 
 ## Appendix: Source Code
 ```c
