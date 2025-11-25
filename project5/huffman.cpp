@@ -25,7 +25,7 @@ struct CompareNodes
     bool operator()(Node *a, Node *b)
     {return a->freq>b->freq;}// Smaller frequency gets higher priority
 };
-// Recursively compute code length for each character and store in huffman_lengths_map
+// Recursively compute code length for each character
 void get_huffman_lengths(Node *root, int depth, map<char, int>& huffman_lengths_map) 
 {
     if (root==nullptr) return;
@@ -37,25 +37,54 @@ void get_huffman_lengths(Node *root, int depth, map<char, int>& huffman_lengths_
     get_huffman_lengths(root->left, depth + 1, huffman_lengths_map);
     get_huffman_lengths(root->right, depth + 1, huffman_lengths_map);
 }
+
+struct TreeNode {
+    TreeNode* left;
+    TreeNode* right;
+    bool is_end;
+    TreeNode(): left(nullptr), right(nullptr), is_end(false) {}
+};
+// using binary tree to check whether the codes form a prefix-free code
+void insert(TreeNode* root, const string& code, bool& ok) 
+{
+    TreeNode* cur=root;
+    for (int i=0;i<code.size();i++) 
+    {
+        char bit=code[i];
+        if(cur->is_end) 
+        { 
+            ok=false; 
+            return; 
+        }        //previous shorter code is a prefix
+        TreeNode*& next=(bit=='0'? cur->left:cur->right);
+        if (!next) next=new TreeNode();
+        cur=next;
+    }
+    if(cur->is_end) 
+    { 
+        ok=false; 
+        return; 
+    }  //current codeword is a duplication of a previous codeword
+    if(cur->left||cur->right) 
+    { 
+        ok=false; 
+        return; 
+    } // current codeword is prefix of a previous longer codeword
+    cur->is_end=true;//record the end of each codeword
+    return ;
+}
 // Check whether the codes form a prefix-free code
 bool is_prefix_code(const map<char, string>& student_codes) 
 {
-    // Check prefix property and duplicate encodings (no structured bindings for older compilers)
-    for(map<char, string>::const_iterator it1=student_codes.begin();it1!=student_codes.end();++it1) {
-        const char char_i=it1->first;
-        const string& code_i=it1->second;
-        map<char, string>::const_iterator it2=it1;
-        ++it2;// start from the element right after it1
-        for (;it2!=student_codes.end();++it2) 
-        {
-            const char char_j=it2->first;
-            const string& code_j=it2->second;
-            // If either code is a prefix of the other, it's not prefix-free
-            if ((code_j.size()>=code_i.size() && code_j.substr(0, code_i.size())==code_i) ||
-                (code_i.size()>code_j.size() && code_i.substr(0, code_j.size())==code_j))
-                return false;
-        }
+    TreeNode* root=new TreeNode();
+    for (map<char, string>::const_iterator it=student_codes.begin();it!=student_codes.end(); ++it) 
+    {
+        bool ok=true;
+        insert(root, it->second, ok);
+        if(!ok) 
+          return false;
     }
+    free(root);
     return true;
 }
 int main() 
@@ -70,7 +99,7 @@ int main()
         int freq;
         cin>>ch>>freq;
         char_freqs[ch]=freq;
-        chars_order[i]=ch;// Record character
+        chars_order[i]=ch;
     }
     // Priority queue storing Node*,using comparator
     priority_queue<Node*, vector<Node*>, CompareNodes> pq;
