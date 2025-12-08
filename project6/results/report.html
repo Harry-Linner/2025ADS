@@ -1,0 +1,349 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Texture Packing 测试报告</title>
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #34495e;
+            margin-top: 30px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: center;
+        }
+        th {
+            background-color: #3498db;
+            color: white;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #e8f4f8;
+        }
+        .positive {
+            color: #27ae60;
+            font-weight: bold;
+        }
+        .negative {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            margin: 20px 0;
+            border: 1px solid #ddd;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .summary {
+            background-color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>📊 Texture Packing 算法测试报告</h1>
+    
+    <div class="summary">
+        <h3>测试概览</h3>
+        <ul>
+            <li>测试样例总数: 21 个</li>
+            <li>binWidth 取值: 1000, 2000, 5000</li>
+            <li>矩形数量范围: 1000 ~ 50000</li>
+            <li>测试算法: NFDH (Next Fit Decreasing Height) vs FFDH (First Fit Decreasing Height)</li>
+        </ul>
+    </div>
+    
+    <h2>📈 1. 高度对比</h2>
+    <img src="plots/height_comparison.png" alt="高度对比图">
+    
+    <h2>⏱️ 2. 运行时间对比</h2>
+    <img src="plots/time_comparison.png" alt="时间对比图">
+    
+    <h2>🎯 3. FFDH 算法改进效果</h2>
+    <img src="plots/improvement.png" alt="改进百分比图">
+    
+    <h2>📋 4. 详细测试数据</h2>
+    <table class="dataframe dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>binWidth</th>
+      <th>n</th>
+      <th>NFDH_Height</th>
+      <th>NFDH_Time</th>
+      <th>FFDH_Height</th>
+      <th>FFDH_Time</th>
+      <th>Height_Improvement_%</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1000</td>
+      <td>1000</td>
+      <td>95888</td>
+      <td>0.0</td>
+      <td>77855</td>
+      <td>0.0</td>
+      <td>18.81</td>
+    </tr>
+    <tr>
+      <td>1000</td>
+      <td>10000</td>
+      <td>1016408</td>
+      <td>1.0</td>
+      <td>784821</td>
+      <td>3.0</td>
+      <td>22.78</td>
+    </tr>
+    <tr>
+      <td>1000</td>
+      <td>3000</td>
+      <td>299953</td>
+      <td>0.0</td>
+      <td>239352</td>
+      <td>1.0</td>
+      <td>20.20</td>
+    </tr>
+    <tr>
+      <td>1000</td>
+      <td>30000</td>
+      <td>3109031</td>
+      <td>1.0</td>
+      <td>2330112</td>
+      <td>32.0</td>
+      <td>25.05</td>
+    </tr>
+    <tr>
+      <td>1000</td>
+      <td>5000</td>
+      <td>492235</td>
+      <td>0.0</td>
+      <td>389205</td>
+      <td>2.0</td>
+      <td>20.93</td>
+    </tr>
+    <tr>
+      <td>1000</td>
+      <td>50000</td>
+      <td>5198569</td>
+      <td>3.0</td>
+      <td>3878967</td>
+      <td>95.0</td>
+      <td>25.38</td>
+    </tr>
+    <tr>
+      <td>1000</td>
+      <td>8000</td>
+      <td>806917</td>
+      <td>1.0</td>
+      <td>625385</td>
+      <td>2.0</td>
+      <td>22.50</td>
+    </tr>
+    <tr>
+      <td>2000</td>
+      <td>1000</td>
+      <td>94967</td>
+      <td>0.0</td>
+      <td>78062</td>
+      <td>0.0</td>
+      <td>17.80</td>
+    </tr>
+    <tr>
+      <td>2000</td>
+      <td>10000</td>
+      <td>1012342</td>
+      <td>1.0</td>
+      <td>780591</td>
+      <td>4.0</td>
+      <td>22.89</td>
+    </tr>
+    <tr>
+      <td>2000</td>
+      <td>3000</td>
+      <td>284736</td>
+      <td>0.0</td>
+      <td>228495</td>
+      <td>0.0</td>
+      <td>19.75</td>
+    </tr>
+    <tr>
+      <td>2000</td>
+      <td>30000</td>
+      <td>3115245</td>
+      <td>1.0</td>
+      <td>2330253</td>
+      <td>33.0</td>
+      <td>25.20</td>
+    </tr>
+    <tr>
+      <td>2000</td>
+      <td>5000</td>
+      <td>502267</td>
+      <td>0.0</td>
+      <td>392517</td>
+      <td>2.0</td>
+      <td>21.85</td>
+    </tr>
+    <tr>
+      <td>2000</td>
+      <td>50000</td>
+      <td>5139270</td>
+      <td>3.0</td>
+      <td>3838305</td>
+      <td>91.0</td>
+      <td>25.31</td>
+    </tr>
+    <tr>
+      <td>2000</td>
+      <td>8000</td>
+      <td>791763</td>
+      <td>0.0</td>
+      <td>613826</td>
+      <td>3.0</td>
+      <td>22.47</td>
+    </tr>
+    <tr>
+      <td>5000</td>
+      <td>1000</td>
+      <td>96446</td>
+      <td>0.0</td>
+      <td>78094</td>
+      <td>0.0</td>
+      <td>19.03</td>
+    </tr>
+    <tr>
+      <td>5000</td>
+      <td>10000</td>
+      <td>998011</td>
+      <td>1.0</td>
+      <td>769880</td>
+      <td>4.0</td>
+      <td>22.86</td>
+    </tr>
+    <tr>
+      <td>5000</td>
+      <td>3000</td>
+      <td>297932</td>
+      <td>0.0</td>
+      <td>235773</td>
+      <td>1.0</td>
+      <td>20.86</td>
+    </tr>
+    <tr>
+      <td>5000</td>
+      <td>30000</td>
+      <td>3049149</td>
+      <td>2.0</td>
+      <td>2295403</td>
+      <td>34.0</td>
+      <td>24.72</td>
+    </tr>
+    <tr>
+      <td>5000</td>
+      <td>5000</td>
+      <td>487101</td>
+      <td>0.0</td>
+      <td>386437</td>
+      <td>1.0</td>
+      <td>20.67</td>
+    </tr>
+    <tr>
+      <td>5000</td>
+      <td>50000</td>
+      <td>5110137</td>
+      <td>3.0</td>
+      <td>3811699</td>
+      <td>92.0</td>
+      <td>25.41</td>
+    </tr>
+    <tr>
+      <td>5000</td>
+      <td>8000</td>
+      <td>781662</td>
+      <td>1.0</td>
+      <td>610577</td>
+      <td>3.0</td>
+      <td>21.89</td>
+    </tr>
+  </tbody>
+</table>
+    
+    <h2>📊 5. 统计摘要</h2>
+    <table class="dataframe dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>平均改进%</th>
+      <th>最小改进%</th>
+      <th>最大改进%</th>
+      <th>NFDH平均时间(ms)</th>
+      <th>FFDH平均时间(ms)</th>
+    </tr>
+    <tr>
+      <th>binWidth</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1000</th>
+      <td>22.236</td>
+      <td>18.81</td>
+      <td>25.38</td>
+      <td>0.857</td>
+      <td>19.286</td>
+    </tr>
+    <tr>
+      <th>2000</th>
+      <td>22.181</td>
+      <td>17.80</td>
+      <td>25.31</td>
+      <td>0.714</td>
+      <td>19.000</td>
+    </tr>
+    <tr>
+      <th>5000</th>
+      <td>22.206</td>
+      <td>19.03</td>
+      <td>25.41</td>
+      <td>1.000</td>
+      <td>19.286</td>
+    </tr>
+  </tbody>
+</table>
+    
+    <hr>
+    <p style="text-align: center; color: #7f8c8d; margin-top: 30px;">
+        生成时间: 2025-12-08 21:52:31
+    </p>
+</body>
+</html>

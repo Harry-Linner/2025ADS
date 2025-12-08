@@ -1,87 +1,119 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include <random>
-#include <chrono>
+#include <ctime>
 #include <iomanip>
-
 using namespace std;
 
-// 矩形结构体
-struct Rect {
+struct Rectangle {
     int id;
-    int w, h;
+    int width;
+    int height;
 };
 
-// 排序规则：按高度降序排列
-bool compareRects(const Rect& a, const Rect& b) {
-    if (a.h != b.h) return a.h > b.h;
-    return a.w > b.w;
+bool cmpHeight(const Rectangle &a, const Rectangle &b) {
+    if (a.height != b.height) return a.height > b.height;
+    return a.width > b.width;
 }
 
-/**
- * FFDH 算法实现
- * @param rects 矩形集合
- * @param stripWidth 固定的最大宽度
- * @return 最终占用的总高度
- */
-int performFFDH(vector<Rect>& rects, int stripWidth) {
-    sort(rects.begin(), rects.end(), compareRects);
-
+// NFDH算法：Next Fit Decreasing Height
+int nfdh(vector<Rectangle> &rects, int binWidth) {
+    sort(rects.begin(), rects.end(), cmpHeight);
+    
+    int currentShelfUsedWidth = 0;
+    int currentShelfHeight = 0;
     int totalHeight = 0;
-    int currentLevelH = 0;
-    int currentLevelWUsed = 0;
-
-    for (const auto& r : rects) {
-        // 如果单个矩形宽度超过条带宽度，则无法放置（异常处理）
-        if (r.w > stripWidth) continue; 
-
-        // 检查当前层是否能放下
-        if (currentLevelWUsed + r.w <= stripWidth) {
-            currentLevelWUsed += r.w;
-            currentLevelH = max(currentLevelH, r.h);
+    
+    for (size_t i = 0; i < rects.size(); ++i) {
+        Rectangle &r = rects[i];
+        
+        if (currentShelfUsedWidth + r.width <= binWidth) {
+            currentShelfUsedWidth += r.width;
+            currentShelfHeight = max(currentShelfHeight, r.height);
         } else {
-            // 放不下，开启新的一层
-            totalHeight += currentLevelH;
-            currentLevelWUsed = r.w;
-            currentLevelH = r.h;
+            if (currentShelfHeight > 0) {
+                totalHeight += currentShelfHeight;
+            }
+            currentShelfUsedWidth = r.width;
+            currentShelfHeight = r.height;
         }
     }
-    totalHeight += currentLevelH; // 加上最后一层的高度
+    
+    if (currentShelfHeight > 0) {
+        totalHeight += currentShelfHeight;
+    }
+    
     return totalHeight;
 }
 
-// 性能测试与用例生成
-void runTest(int size, int stripWidth) {
-    vector<Rect> rects;
-    random_device rd;
-    mt19937 gen(rd());
-    uniform_int_distribution<> disW(1, stripWidth);
-    uniform_int_distribution<> disH(1, 100);
-
-    for (int i = 0; i < size; ++i) {
-        rects.push_back({i, disW(gen), disH(gen)});
+// FFDH算法：First Fit Decreasing Height
+int ffdh(vector<Rectangle> &rects, int binWidth) {
+    sort(rects.begin(), rects.end(), cmpHeight);
+    
+    // 货架列表：每个货架记录高度和已用宽度
+    vector<pair<int, int>> shelves; // (height, usedWidth)
+    
+    for (size_t i = 0; i < rects.size(); ++i) {
+        Rectangle &r = rects[i];
+        
+        bool placed = false;
+        
+        // First Fit: 从第一个货架开始找能放下的
+        for (size_t j = 0; j < shelves.size(); ++j) {
+            if (shelves[j].second + r.width <= binWidth) {
+                shelves[j].second += r.width;
+                shelves[j].first = max(shelves[j].first, r.height);
+                placed = true;
+                break;
+            }
+        }
+        
+        // 所有货架都放不下，创建新货架
+        if (!placed) {
+            shelves.push_back({r.height, r.width});
+        }
     }
-
-    auto start = chrono::high_resolution_clock::now();
-    int minHeight = performFFDH(rects, stripWidth);
-    auto end = chrono::high_resolution_clock::now();
-
-    chrono::duration<double, milli> elapsed = end - start;
-    cout << setw(10) << size << " | " << setw(10) << minHeight << " | " << fixed << setprecision(3) << elapsed.count() << " ms" << endl;
+    
+    // 计算总高度
+    int totalHeight = 0;
+    for (size_t i = 0; i < shelves.size(); ++i) {
+        totalHeight += shelves[i].first;
+    }
+    
+    return totalHeight;
 }
 
-int main() {
-    int stripWidth = 1000;
-    cout << "--- Texture Packing Test (FFDH Algorithm) ---" << endl;
-    cout << "Strip Width: " << stripWidth << endl;
-    cout << setw(10) << "Size" << " | " << setw(10) << "Height" << " | " << "Time" << endl;
-    cout << "---------------------------------------------" << endl;
-
-    vector<int> sizes = {10, 100, 500, 1000, 5000, 10000};
-    for (int n : sizes) {
-        runTest(n, stripWidth);
+int main() 
+{
+    int binWidth, n;
+    cin >> binWidth >> n;
+    
+    vector<Rectangle> rects;
+    for (int i = 0; i < n; ++i) {
+        int w, h;
+        cin >> w >> h;
+        rects.push_back({i + 1, w, h});
     }
-
+    
+    clock_t start, end;
+    
+    // 运行NFDH算法
+    vector<Rectangle> rectsNFDH = rects;
+    start = clock();
+    int heightNFDH = nfdh(rectsNFDH, binWidth);
+    end = clock();
+    double timeNFDH = double(end - start) / CLOCKS_PER_SEC * 1000.0;
+    
+    // 运行FFDH算法
+    vector<Rectangle> rectsFFDH = rects;
+    start = clock();
+    int heightFFDH = ffdh(rectsFFDH, binWidth);
+    end = clock();
+    double timeFFDH = double(end - start) / CLOCKS_PER_SEC * 1000.0;
+    
+    // 输出结果
+    cout << "NFDH: " << heightNFDH << " (Time: " << fixed << setprecision(6) << timeNFDH << " ms)" << endl;
+    cout << "FFDH: " << heightFFDH << " (Time: " << fixed << setprecision(6) << timeFFDH << " ms)" << endl;
+    
     return 0;
 }
