@@ -1,12 +1,12 @@
 #include <iostream>
 #include <string>
+#include <ctime>
 #include "SkipLists.h"
 
 using namespace std;
 
-// --- Helper function for testing search results ---
-template <typename T>
-void test_search(SkipList<T>& sl, T val) {
+// Test search functionality
+void test_search(SkipList& sl, int val) {
     cout << "Searching for " << val << ": " 
          << (sl.search(val) ? "Found" : "Not Found") << endl;
 }
@@ -14,54 +14,44 @@ void test_search(SkipList<T>& sl, T val) {
 int main() {
     srand(time(0));
     // 1. Initialization and basic insertion test
-    cout << "--- 1. Initializing Skip List (int) ---" << endl;
-    SkipList<int> sl_int;
+    cout << "--- 1. Initializing Skip List (Integer Type) ---" << endl;
+    SkipList sl_int;
 
-    // Insert a sequence of values
+    // Insert a series of values
     sl_int.insert(15); // L1
     sl_int.insert(5);  // L2
     sl_int.insert(25); // L3
     sl_int.insert(30); // L1
-    sl_int.insert(10); // L4 (Likely the highest level)
+    sl_int.insert(10); // L4 (may be highest level)
     sl_int.insert(20); // L1
     sl_int.insert(35); // L2
 
-    // Display the initial structure
+    // Display initial structure
     sl_int.display();
 
-    // 2. Search testing
+    // 2. Search tests
     cout << "\n--- 2. Search Operations ---" << endl;
-    test_search(sl_int, 10); // Should be Found
-    test_search(sl_int, 25); // Should be Found
-    test_search(sl_int, 17); // Should be Not Found
-    test_search(sl_int, 35); // Should be Found
+    test_search(sl_int, 10); // Should be found
+    test_search(sl_int, 25); // Should be found
+    test_search(sl_int, 17); // Should not be found
+    test_search(sl_int, 35); // Should be found
 
-    // 3. Removal testing
-    cout << "\n--- 3. Removal Operations ---" << endl;
-    sl_int.remove(15); // Remove an existing value
-    sl_int.remove(50); // Try to remove a non-existent value
-    sl_int.remove(10); // Remove the highest level node (may lower the list's max level)
+    // 3. Deletion tests
+    cout << "\n--- 3. Deletion Operations ---" << endl;
+    sl_int.remove(15); // Delete existing value
+    sl_int.remove(50); // Attempt to delete non-existent value
+    sl_int.remove(10); // Delete highest level node (may reduce skip list's highest level)
 
-    // Display the structure after removals
+    // Display structure after deletion
     sl_int.display();
 
-    // Re-verify search after removal
+    // Verify search after deletion
     cout << "\n--- 4. Final Search Check ---" << endl;
-    test_search(sl_int, 15); // Should be Not Found
-    test_search(sl_int, 25); // Should be Found
+    test_search(sl_int, 15); // Should not be found
+    test_search(sl_int, 25); // Should be found
 
-    // --- Optional: Test with string data type ---
-    cout << "\n--- 5. Testing Skip List with Strings ---" << endl;
-    SkipList<string> sl_str;
-    sl_str.insert("banana");
-    sl_str.insert("apple");
-    sl_str.insert("date");
-    sl_str.insert("cherry");
-    
-    sl_str.display();
-    test_search(sl_str, string("apple"));
-
-    // The destructor will be called automatically when main exits, cleaning up memory.
-    cout << "\n--- Skip List test completed successfully. ---" << endl;
+    // Manually call cleanup function to free memory
+    sl_int.cleanup();
+    cout << "\n--- Skip List Test Completed Successfully. ---" << endl;
     return 0;
 }
