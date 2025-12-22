@@ -30,7 +30,7 @@ vector<int> readData(const string& filename) {
 
 int main() {
     // Test different data scales
-    vector<int> sizes = {100, 500, 1000, 5000, 8000, 10000, 30000, 50000};
+    vector<int> sizes = {100, 500, 1000, 5000, 8000, 10000, 30000};
     
     cout << "规模\t插入时间(ms)\t查找时间(ms)\t删除时间(ms)" << endl;
     
