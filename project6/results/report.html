@@ -3,10 +3,10 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Texture Packing 测试报告</title>
+    <title>Texture Packing Test Report</title>
     <style>
         body {
-            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            font-family: Arial, sans-serif;
             margin: 20px;
             background-color: #f5f5f5;
         }
@@ -66,28 +66,28 @@
     </style>
 </head>
 <body>
-    <h1>📊 Texture Packing 算法测试报告</h1>
+    <h1>📊 Texture Packing Algorithm Test Report</h1>
     
     <div class="summary">
-        <h3>测试概览</h3>
+        <h3>Test Overview</h3>
         <ul>
-            <li>测试样例总数: 21 个</li>
-            <li>binWidth 取值: 1000, 2000, 5000</li>
-            <li>矩形数量范围: 1000 ~ 50000</li>
-            <li>测试算法: NFDH (Next Fit Decreasing Height) vs FFDH (First Fit Decreasing Height)</li>
+            <li>Total test cases: 21 </li>
+            <li>binWidth values: 1000, 2000, 5000</li>
+            <li>Rectangle count range: 1000 ~ 50000</li>
+            <li>Test algorithms: NFDH (Next Fit Decreasing Height) vs FFDH (First Fit Decreasing Height)</li>
         </ul>
     </div>
     
-    <h2>📈 1. 高度对比</h2>
-    <img src="plots/height_comparison.png" alt="高度对比图">
+    <h2>📈 1. Height Comparison</h2>
+    <img src="plots/height_comparison.png" alt="Height comparison plot">
     
-    <h2>⏱️ 2. 运行时间对比</h2>
-    <img src="plots/time_comparison.png" alt="时间对比图">
+    <h2>⏱️ 2. Running Time Comparison</h2>
+    <img src="plots/time_comparison.png" alt="Time comparison plot">
     
-    <h2>🎯 3. FFDH 算法改进效果</h2>
-    <img src="plots/improvement.png" alt="改进百分比图">
+    <h2>🎯 3. FFDH Algorithm Improvement Effect</h2>
+    <img src="plots/improvement.png" alt="Improvement percentage plot">
     
-    <h2>📋 4. 详细测试数据</h2>
+    <h2>📋 4. Detailed Test Data</h2>
     <table class="dataframe dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -293,16 +293,16 @@
   </tbody>
 </table>
     
-    <h2>📊 5. 统计摘要</h2>
+    <h2>📊 5. Statistical Summary</h2>
     <table class="dataframe dataframe">
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>平均改进%</th>
-      <th>最小改进%</th>
-      <th>最大改进%</th>
-      <th>NFDH平均时间(ms)</th>
-      <th>FFDH平均时间(ms)</th>
+      <th>Average Improvement%</th>
+      <th>Minimum Improvement%</th>
+      <th>Maximum Improvement%</th>
+      <th>NFDH Avg Time(ms)</th>
+      <th>FFDH Avg Time(ms)</th>
     </tr>
     <tr>
       <th>binWidth</th>
@@ -343,7 +343,7 @@
     
     <hr>
     <p style="text-align: center; color: #7f8c8d; margin-top: 30px;">
-        生成时间: 2025-12-08 21:52:31
+        Generated at: 2025-12-09 21:15:34
     </p>
 </body>
 </html>

@@ -3,8 +3,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import os
 
-# 设置中文字体
-plt.rcParams['font.sans-serif'] = ['SimHei', 'Microsoft YaHei']
+# Set English font
+plt.rcParams['font.sans-serif'] = ['Arial', 'DejaVu Sans']
 plt.rcParams['axes.unicode_minus'] = False
 
 # 读取结果
@@ -14,16 +14,17 @@ print("=== Test Results Summary ===")
 print(df.to_string(index=False))
 print()
 
-# 创建图表目录
+# Create plots directory
 os.makedirs('results/plots', exist_ok=True)
 
-# 1. 高度对比图 - 按 binWidth 分组
+# 1. Height comparison - Grouped by binWidth (only 3 plots)
 fig, axes = plt.subplots(2, 2, figsize=(16, 12))
-fig.suptitle('NFDH vs FFDH 高度对比（不同 binWidth）', fontsize=16, fontweight='bold')
+fig.suptitle('NFDH vs FFDH Height Comparison (Different binWidth)', fontsize=16, fontweight='bold')
 
 binWidths = sorted(df['binWidth'].unique())
 
-for idx, binWidth in enumerate(binWidths):
+# Only use the first 3 binWidth values
+for idx, binWidth in enumerate(binWidths[:3]):
     row = idx // 2
     col = idx % 2
     ax = axes[row, col]
@@ -36,63 +37,70 @@ for idx, binWidth in enumerate(binWidths):
     bars1 = ax.bar(x - width/2, subset['NFDH_Height'], width, label='NFDH', alpha=0.8, color='#3498db')
     bars2 = ax.bar(x + width/2, subset['FFDH_Height'], width, label='FFDH', alpha=0.8, color='#e74c3c')
     
-    ax.set_xlabel('矩形数量 (n)', fontsize=11)
-    ax.set_ylabel('总高度', fontsize=11)
+    ax.set_xlabel('Number of Rectangles (n)', fontsize=11)
+    ax.set_ylabel('Total Height', fontsize=11)
     ax.set_title(f'binWidth = {binWidth}', fontsize=12, fontweight='bold')
     ax.set_xticks(x)
     ax.set_xticklabels(subset['n'], rotation=45)
     ax.legend()
     ax.grid(axis='y', alpha=0.3)
 
+# Hide the 4th subplot (bottom right)
+axes[1, 1].set_visible(False)
+
 plt.tight_layout()
 plt.savefig('results/plots/height_comparison.png', dpi=300, bbox_inches='tight')
-print("✓ 生成图表: results/plots/height_comparison.png")
+print("✓ Generated plot: results/plots/height_comparison.png")
 
-# 2. 时间对比图 - 按 binWidth 分组
-fig, axes = plt.subplots(2, 2, figsize=(18, 14))  # 增大图表尺寸
-fig.suptitle('NFDH vs FFDH 运行时间对比（不同 binWidth）', fontsize=16, fontweight='bold')
+# 2. Time comparison - Grouped by binWidth (only 3 plots)
+fig, axes = plt.subplots(2, 2, figsize=(18, 14))  # Increase plot size
+fig.suptitle('NFDH vs FFDH Running Time Comparison (Different binWidth)', fontsize=16, fontweight='bold')
 
-for idx, binWidth in enumerate(binWidths):
+# Only use the first 3 binWidth values
+for idx, binWidth in enumerate(binWidths[:3]):
     row = idx // 2
     col = idx % 2
     ax = axes[row, col]
     
-    subset = df[df['binWidth'] == binWidth].sort_values('n')  # 按n排序
+    subset = df[df['binWidth'] == binWidth].sort_values('n')  # Sort by n
     
     ax.plot(subset['n'], subset['NFDH_Time'], marker='o', label='NFDH', linewidth=2, markersize=8, color='#3498db')
     ax.plot(subset['n'], subset['FFDH_Time'], marker='s', label='FFDH', linewidth=2, markersize=8, color='#e74c3c')
     
-    ax.set_xlabel('矩形数量 (n)', fontsize=11)
-    ax.set_ylabel('运行时间 (ms)', fontsize=11)
+    ax.set_xlabel('Number of Rectangles (n)', fontsize=11)
+    ax.set_ylabel('Running Time (ms)', fontsize=11)
     ax.set_title(f'binWidth = {binWidth}', fontsize=12, fontweight='bold')
     
-    # 只对x轴使用对数坐标，y轴使用线性坐标（从0开始）
+    # Use log scale for x-axis only, linear scale for y-axis (starting from 0)
     ax.set_xscale('log')
-    ax.set_ylim(bottom=0)  # y轴从0开始
+    ax.set_ylim(bottom=0)  # y-axis starts from 0
     
-    # 添加网格线
+    # Add grid lines
     ax.grid(True, alpha=0.3, which='both', axis='both')
     ax.minorticks_on()
-    ax.grid(True, which='minor', alpha=0.15, linestyle=':', axis='x')  # 只在x轴添加次网格线
+    ax.grid(True, which='minor', alpha=0.15, linestyle=':', axis='x')  # Only add minor grid lines on x-axis
     
     ax.legend()
 
+# Hide the 4th subplot (bottom right)
+axes[1, 1].set_visible(False)
+
 plt.tight_layout()
 plt.savefig('results/plots/time_comparison.png', dpi=300, bbox_inches='tight')
-print("✓ 生成图表: results/plots/time_comparison.png")
+print("✓ Generated plot: results/plots/time_comparison.png")
 
-# 3. FFDH 相对于 NFDH 的改进百分比
+# 3. FFDH improvement percentage over NFDH
 df['Height_Improvement_%'] = ((df['NFDH_Height'] - df['FFDH_Height']) / df['NFDH_Height'] * 100).round(2)
 
 fig, ax = plt.subplots(figsize=(14, 8))
 
 for binWidth in binWidths:
-    subset = df[df['binWidth'] == binWidth].sort_values('n')  # 按n排序
+    subset = df[df['binWidth'] == binWidth].sort_values('n')  # Sort by n
     ax.plot(subset['n'], subset['Height_Improvement_%'], marker='o', label=f'binWidth={binWidth}', linewidth=2, markersize=8)
 
-ax.set_xlabel('矩形数量 (n)', fontsize=12)
-ax.set_ylabel('FFDH 相对 NFDH 的改进 (%)', fontsize=12)
-ax.set_title('FFDH 算法的高度优化效果', fontsize=14, fontweight='bold')
+ax.set_xlabel('Number of Rectangles (n)', fontsize=12)
+ax.set_ylabel('FFDH Improvement over NFDH (%)', fontsize=12)
+ax.set_title('Height Optimization Effect of FFDH Algorithm', fontsize=14, fontweight='bold')
 ax.set_xscale('log')
 ax.axhline(y=0, color='gray', linestyle='--', alpha=0.5)
 ax.legend()
@@ -100,29 +108,29 @@ ax.grid(True, alpha=0.3)
 
 plt.tight_layout()
 plt.savefig('results/plots/improvement.png', dpi=300, bbox_inches='tight')
-print("✓ 生成图表: results/plots/improvement.png")
+print("✓ Generated plot: results/plots/improvement.png")
 
-# 4. 性能统计表格
-print("\n=== FFDH 相对于 NFDH 的改进统计 ===")
+# 4. Performance statistics table
+print("\n=== FFDH Improvement Statistics over NFDH ===")
 summary = df.groupby('binWidth').agg({
     'Height_Improvement_%': ['mean', 'min', 'max'],
     'NFDH_Time': 'mean',
     'FFDH_Time': 'mean'
 }).round(3)
-summary.columns = ['平均改进%', '最小改进%', '最大改进%', 'NFDH平均时间(ms)', 'FFDH平均时间(ms)']
+summary.columns = ['Average Improvement%', 'Minimum Improvement%', 'Maximum Improvement%', 'NFDH Avg Time(ms)', 'FFDH Avg Time(ms)']
 print(summary)
 print()
 
-# 5. 生成 HTML 报告
+# 5. Generate HTML report
 html_content = f"""
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Texture Packing 测试报告</title>
+    <title>Texture Packing Test Report</title>
     <style>
         body {{
-            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            font-family: Arial, sans-serif;
             margin: 20px;
             background-color: #f5f5f5;
         }}
@@ -182,36 +190,36 @@ html_content = f"""
     </style>
 </head>
 <body>
-    <h1>📊 Texture Packing 算法测试报告</h1>
+    <h1>📊 Texture Packing Algorithm Test Report</h1>
     
     <div class="summary">
-        <h3>测试概览</h3>
+        <h3>Test Overview</h3>
         <ul>
-            <li>测试样例总数: {len(df)} 个</li>
-            <li>binWidth 取值: {', '.join(map(str, binWidths))}</li>
-            <li>矩形数量范围: {df['n'].min()} ~ {df['n'].max()}</li>
-            <li>测试算法: NFDH (Next Fit Decreasing Height) vs FFDH (First Fit Decreasing Height)</li>
+            <li>Total test cases: {len(df)} </li>
+            <li>binWidth values: {', '.join(map(str, binWidths))}</li>
+            <li>Rectangle count range: {df['n'].min()} ~ {df['n'].max()}</li>
+            <li>Test algorithms: NFDH (Next Fit Decreasing Height) vs FFDH (First Fit Decreasing Height)</li>
         </ul>
     </div>
     
-    <h2>📈 1. 高度对比</h2>
-    <img src="plots/height_comparison.png" alt="高度对比图">
+    <h2>📈 1. Height Comparison</h2>
+    <img src="plots/height_comparison.png" alt="Height comparison plot">
     
-    <h2>⏱️ 2. 运行时间对比</h2>
-    <img src="plots/time_comparison.png" alt="时间对比图">
+    <h2>⏱️ 2. Running Time Comparison</h2>
+    <img src="plots/time_comparison.png" alt="Time comparison plot">
     
-    <h2>🎯 3. FFDH 算法改进效果</h2>
-    <img src="plots/improvement.png" alt="改进百分比图">
+    <h2>🎯 3. FFDH Algorithm Improvement Effect</h2>
+    <img src="plots/improvement.png" alt="Improvement percentage plot">
     
-    <h2>📋 4. 详细测试数据</h2>
+    <h2>📋 4. Detailed Test Data</h2>
     {df.to_html(index=False, classes='dataframe', border=0)}
     
-    <h2>📊 5. 统计摘要</h2>
+    <h2>📊 5. Statistical Summary</h2>
     {summary.to_html(classes='dataframe', border=0)}
     
     <hr>
     <p style="text-align: center; color: #7f8c8d; margin-top: 30px;">
-        生成时间: {pd.Timestamp.now().strftime('%Y-%m-%d %H:%M:%S')}
+        Generated at: {pd.Timestamp.now().strftime('%Y-%m-%d %H:%M:%S')}
     </p>
 </body>
 </html>
@@ -220,9 +228,9 @@ html_content = f"""
 with open('results/report.html', 'w', encoding='utf-8') as f:
     f.write(html_content)
 
-print("✓ 生成 HTML 报告: results/report.html")
-print("\n=== 可视化完成! ===")
-print("请查看以下文件:")
-print("  - results/results.csv (原始数据)")
-print("  - results/report.html (完整报告)")
-print("  - results/plots/*.png (图表)")
+print("✓ Generated HTML report: results/report.html")
+print("\n=== Visualization Complete! ===")
+print("Please check the following files:")
+print("  - results/results.csv (raw data)")
+print("  - results/report.html (complete report)")
+print("  - results/plots/*.png (plots)")
