@@ -84,7 +84,7 @@ int main(int argc, char *argv[]) {
     char buffer[MAX_WORD_LEN];
     char cleaned[MAX_WORD_LEN];
     
-    printf("Starting serial processing...\n");
+    fprintf(stderr, "Starting serial processing...\n");
     clock_t start = clock(); // Start timing
 
     // Read and count words

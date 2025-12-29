@@ -1,0 +1,5 @@
+average: 0.0287
+minimum: 0.0272
+maximum: 0.0309
+std_dev: 0.0013
+runs: 5

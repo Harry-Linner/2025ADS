@@ -1,0 +1,2 @@
+# 这个文件确保expected目录被git跟踪
+# 预期结果文件将在运行generate_test_data.py时生成

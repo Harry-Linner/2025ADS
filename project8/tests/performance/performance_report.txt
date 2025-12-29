@@ -1,0 +1,82 @@
+MapReduce 词频统计性能测试报告
+================================
+测试时间: 2025年 12月 29日 星期一 16:02:57 CST
+测试次数: 5 次
+测试环境: Linux DESKTOP-9E6PQBB 6.6.87.2-microsoft-standard-WSL2 #1 SMP PREEMPT_DYNAMIC Thu Jun  5 18:30:46 UTC 2025 x86_64 x86_64 x86_64 GNU/Linux
+
+=== small 测试结果 ===
+
+串行算法:
+average: 0.0183
+minimum: 0.0179
+maximum: 0.0188
+std_dev: 0.0003
+runs: 5
+
+并行算法:
+average: 0.0258
+minimum: 0.0131
+maximum: 0.0673
+std_dev: 0.0208
+runs: 5
+
+加速比: .7093x
+
+----------------------------------------
+=== medium 测试结果 ===
+
+串行算法:
+average: 0.0287
+minimum: 0.0272
+maximum: 0.0309
+std_dev: 0.0013
+runs: 5
+
+并行算法:
+average: 0.0262
+minimum: 0.0235
+maximum: 0.0295
+std_dev: 0.0022
+runs: 5
+
+加速比: 1.0954x
+
+----------------------------------------
+=== large 测试结果 ===
+
+串行算法:
+average: 0.3099
+minimum: 0.3047
+maximum: 0.3161
+std_dev: 0.0040
+runs: 5
+
+并行算法:
+average: 0.1791
+minimum: 0.1594
+maximum: 0.2126
+std_dev: 0.0205
+runs: 5
+
+加速比: 1.7303x
+
+----------------------------------------
+=== frankenstein 测试结果 ===
+
+串行算法:
+average: 1.1266
+minimum: 1.0802
+maximum: 1.1679
+std_dev: 0.0324
+runs: 5
+
+并行算法:
+average: 0.2897
+minimum: 0.2650
+maximum: 0.3319
+std_dev: 0.0229
+runs: 5
+
+加速比: 3.8888x
+
+----------------------------------------
