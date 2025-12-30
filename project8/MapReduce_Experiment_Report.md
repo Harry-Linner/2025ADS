@@ -350,5 +350,419 @@ int main(int argc, char *argv[]) {
     return 0;
 }
 ```
+### test program:
+```
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include <dirent.h>
+#include <fcntl.h>
 
+#include <limits.h>
 
+#ifdef _WIN32
+#include <windows.h>
+#include <direct.h>
+#include <io.h>
+#define mkdir_p(path) _mkdir(path)
+#define access _access
+#define F_OK 0
+#else
+#include <sys/wait.h>
+#define mkdir_p(path) mkdir(path, 0755)
+#endif
+
+// Define cross-platform version of getcwd
+#ifdef _WIN32
+#define getcwd _getcwd
+#endif
+
+// Color definitions
+#define RED "\033[0;31m"
+#define GREEN "\033[0;32m"
+#define YELLOW "\033[1;33m"
+#define BLUE "\033[0;34m"
+#define NC "\033[0m" // No Color
+
+// Project paths
+char project_root[1024];
+char test_dir[1024];
+
+// Check if file exists
+int file_exists(const char *filename) {
+#ifdef _WIN32
+    return (_access(filename, F_OK) == 0);
+#else
+    struct stat buffer;
+    return (stat(filename, &buffer) == 0);
+#endif
+}
+
+// Create directory (recursive)
+int create_directory(const char *path) {
+    char tmp[1024];
+    char *p = NULL;
+    size_t len;
+
+    snprintf(tmp, sizeof(tmp), "%s", path);
+    len = strlen(tmp);
+    if (tmp[len - 1] == '/')
+        tmp[len - 1] = 0;
+    for (p = tmp + 1; *p; p++) {
+        if (*p == '/') {
+            *p = 0;
+            mkdir_p(tmp);
+            *p = '/';
+        }
+    }
+    return mkdir_p(tmp);
+}
+
+// Compile programs
+int compile_programs() {
+    printf("\n%sCompiling programs...%s\n", YELLOW, NC);
+
+    // Compile serial program
+    printf("Compiling serial program...\n");
+    char serial_compile_cmd[1024];
+    snprintf(serial_compile_cmd, sizeof(serial_compile_cmd), 
+             "gcc -o %s/src/serial/serial %s/src/serial/serial.c -std=c99", 
+             project_root, project_root);
+    
+    if (!file_exists("src/serial/serial.c")) {
+        printf("%s%sSerial program source file not found%s\n", RED, project_root, NC);
+        return 1;
+    }
+    
+    int serial_result = system(serial_compile_cmd);
+    if (serial_result == 0) {
+        printf("%sSerial program compiled successfully%s\n", GREEN, NC);
+    } else {
+        printf("%sSerial program compilation failed%s\n", RED, NC);
+        return 1;
+    }
+
+    // Compile parallel program
+    printf("Compiling parallel program...\n");
+    if (!file_exists("src/parallel/mapper.c") || !file_exists("src/parallel/reducer.c")) {
+        printf("%s%sParallel program source files not found%s\n", RED, project_root, NC);
+        return 1;
+    }
+    
+    char mapper_compile_cmd[1024];
+    snprintf(mapper_compile_cmd, sizeof(mapper_compile_cmd), 
+             "gcc -o %s/src/parallel/mapper %s/src/parallel/mapper.c -std=c99", 
+             project_root, project_root);
+    
+    char reducer_compile_cmd[1024];
+    snprintf(reducer_compile_cmd, sizeof(reducer_compile_cmd), 
+             "gcc -o %s/src/parallel/reducer %s/src/parallel/reducer.c -std=c99", 
+             project_root, project_root);
+    
+    int mapper_result = system(mapper_compile_cmd);
+    int reducer_result = system(reducer_compile_cmd);
+    
+    if (mapper_result == 0 && reducer_result == 0) {
+        printf("%sParallel program compiled successfully%s\n", GREEN, NC);
+    } else {
+        printf("%sParallel program compilation failed%s\n", RED, NC);
+        return 1;
+    }
+    
+    return 0;
+}
+
+// Generate test data
+int generate_test_data() {
+    printf("\n%sGenerating test data...%s\n", YELLOW, NC);
+    
+    char generate_cmd[1024];
+    snprintf(generate_cmd, sizeof(generate_cmd), 
+             "python3 %s/tests/scripts/generate_test_data.py", project_root);
+    
+    return system(generate_cmd);
+}
+
+// Run serial test
+int run_serial_test(const char* test_name, const char* input_file, const char* output_file) {
+    printf("\n%sRunning serial test: %s%s\n", BLUE, test_name, NC);
+    printf("Input file: %s\n", input_file);
+    printf("Output file: %s\n", output_file);
+    
+    // Record start time
+    clock_t start = clock();
+    
+    // Build run command
+    char serial_cmd[2048];
+    char log_file[1024];
+    snprintf(log_file, sizeof(log_file), "%s.log", output_file);
+    snprintf(serial_cmd, sizeof(serial_cmd), 
+             "%s/src/serial/serial %s > %s 2> %s", 
+             project_root, input_file, output_file, log_file);
+    
+    int result = system(serial_cmd);
+    
+    // Record end time
+    clock_t end = clock();
+    double runtime = ((double)(end - start)) / CLOCKS_PER_SEC;
+    
+    printf("运行时间: %.4f秒\n", runtime);
+    
+    // Save runtime
+    FILE* time_file = fopen(strcat(strdup(output_file), ".time"), "w");
+    if (time_file != NULL) {
+        fprintf(time_file, "%.4f\n", runtime);
+        fclose(time_file);
+    }
+    
+    // Display statistics
+    FILE* log = fopen(log_file, "r");
+    if (log != NULL) {
+        printf("Performance statistics:\n");
+        char line[1024];
+        while (fgets(line, sizeof(line), log)) {
+            printf("%s", line);
+        }
+        fclose(log);
+    }
+    
+    return result;
+}
+
+// Run parallel test
+int run_parallel_test(const char* test_name, const char* input_file, const char* output_file) {
+    printf("\n%sRunning parallel test: %s%s\n", BLUE, test_name, NC);
+    printf("Input file: %s\n", input_file);
+    printf("Output file: %s\n", output_file);
+    
+    // Record start time
+    clock_t start = clock();
+    
+    // Build MapReduce command
+    char mapped_file[1024];
+    snprintf(mapped_file, sizeof(mapped_file), "%s.mapped", output_file);
+    
+    char map_cmd[2048];
+    snprintf(map_cmd, sizeof(map_cmd), 
+             "cat %s | %s/src/parallel/mapper | sort > %s", 
+             input_file, project_root, mapped_file);
+    
+    char reduce_cmd[2048];
+    snprintf(reduce_cmd, sizeof(reduce_cmd), 
+             "cat %s | %s/src/parallel/reducer > %s", 
+             mapped_file, project_root, output_file);
+    
+    int map_result = system(map_cmd);
+    if (map_result != 0) {
+        printf("%sMap phase failed%s\n", RED, NC);
+        return map_result;
+    }
+    
+    int reduce_result = system(reduce_cmd);
+    if (reduce_result != 0) {
+        printf("%sReduce phase failed%s\n", RED, NC);
+        return reduce_result;
+    }
+    
+    // Record end time
+    clock_t end = clock();
+    double runtime = ((double)(end - start)) / CLOCKS_PER_SEC;
+    
+    printf("运行时间: %.4f秒\n", runtime);
+    
+    // Save runtime
+    FILE* time_file = fopen(strcat(strdup(output_file), ".time"), "w");
+    if (time_file != NULL) {
+        fprintf(time_file, "%.4f\n", runtime);
+        fclose(time_file);
+    }
+    
+    // Clean up intermediate files
+    remove(mapped_file);
+    
+    return 0;
+}
+
+// Compare results
+void compare_results(const char* test_name, const char* serial_result, 
+                     const char* parallel_result, const char* expected_result) {
+    printf("\n%s比较结果: %s%s\n", YELLOW, test_name, NC);
+    
+    // Compare serial and parallel results
+    char diff_cmd[2048];
+    snprintf(diff_cmd, sizeof(diff_cmd), "diff -q %s %s > /dev/null 2>&1", 
+             serial_result, parallel_result);
+    
+    int diff_result = system(diff_cmd);
+    if (diff_result == 0) {
+        printf("%s✓ 串行和并行结果一致%s\n", GREEN, NC);
+    } else {
+        printf("%s✗ 串行和并行结果不一致%s\n", RED, NC);
+        // 显示差异详情
+        char diff_detail_cmd[2048];
+        snprintf(diff_detail_cmd, sizeof(diff_detail_cmd), 
+                 "diff %s %s | head -20", serial_result, parallel_result);
+        system(diff_detail_cmd);
+    }
+    
+    // Compare with expected results if available
+    if (expected_result && file_exists(expected_result)) {
+        snprintf(diff_cmd, sizeof(diff_cmd), "diff -q %s %s > /dev/null 2>&1", 
+                 serial_result, expected_result);
+        diff_result = system(diff_cmd);
+        if (diff_result == 0) {
+            printf("%s✓ 结果与预期一致%s\n", GREEN, NC);
+        } else {
+            printf("%s✗ Results don't match expected%s\n", RED, NC);
+            // Show difference details
+            char diff_detail_cmd[2048];
+            snprintf(diff_detail_cmd, sizeof(diff_detail_cmd), 
+                     "diff %s %s | head -10", serial_result, expected_result);
+            system(diff_detail_cmd);
+        }
+    }
+    
+    // Display performance comparison
+    char serial_time_file[1024], parallel_time_file[1024];
+    snprintf(serial_time_file, sizeof(serial_time_file), "%s.time", serial_result);
+    snprintf(parallel_time_file, sizeof(parallel_time_file), "%s.time", parallel_result);
+    
+    if (file_exists(serial_time_file) && file_exists(parallel_time_file)) {
+        FILE* serial_time_f = fopen(serial_time_file, "r");
+        FILE* parallel_time_f = fopen(parallel_time_file, "r");
+        
+        if (serial_time_f && parallel_time_f) {
+            double serial_time, parallel_time;
+            fscanf(serial_time_f, "%lf", &serial_time);
+            fscanf(parallel_time_f, "%lf", &parallel_time);
+            
+            printf("性能比较:\n");
+            printf("  串行时间: %.4f秒\n", serial_time);
+            printf("  并行时间: %.4f秒\n", parallel_time);
+            
+            if (parallel_time > 0) {
+                double speedup = serial_time / parallel_time;
+                printf("  加速比: %.2fx\n", speedup);
+            }
+            
+            fclose(serial_time_f);
+            fclose(parallel_time_f);
+        }
+    }
+}
+
+// Run all tests
+int run_all_tests() {
+    printf("\n%s=== 开始测试 ===%s\n", YELLOW, NC);
+    
+    // 小规模测试
+    char small_input[1024], small_serial_output[1024], small_parallel_output[1024];
+    snprintf(small_input, sizeof(small_input), "%s/tests/data/small_test.txt", project_root);
+    snprintf(small_serial_output, sizeof(small_serial_output), 
+             "%s/tests/results/serial_results/small_result.txt", project_root);
+    snprintf(small_parallel_output, sizeof(small_parallel_output), 
+             "%s/tests/results/parallel_results/small_result.txt", project_root);
+    
+    if (file_exists(small_input)) {
+        run_serial_test("小规模", small_input, small_serial_output);
+        run_parallel_test("小规模", small_input, small_parallel_output);
+        
+        char small_expected[1024];
+        snprintf(small_expected, sizeof(small_expected), 
+                 "%s/tests/expected/small_expected.txt", project_root);
+        compare_results("小规模", small_serial_output, small_parallel_output, small_expected);
+    }
+    
+    // Medium scale test
+    char medium_input[1024], medium_serial_output[1024], medium_parallel_output[1024];
+    snprintf(medium_input, sizeof(medium_input), "%s/tests/data/medium_test.txt", project_root);
+    snprintf(medium_serial_output, sizeof(medium_serial_output), 
+             "%s/tests/results/serial_results/medium_result.txt", project_root);
+    snprintf(medium_parallel_output, sizeof(medium_parallel_output), 
+             "%s/tests/results/parallel_results/medium_result.txt", project_root);
+    
+    if (file_exists(medium_input)) {
+        run_serial_test("中等规模", medium_input, medium_serial_output);
+        run_parallel_test("中等规模", medium_input, medium_parallel_output);
+        
+        char medium_expected[1024];
+        snprintf(medium_expected, sizeof(medium_expected), 
+                 "%s/tests/expected/medium_expected.txt", project_root);
+        compare_results("中等规模", medium_serial_output, medium_parallel_output, medium_expected);
+    }
+    
+    // Large scale test
+    char large_input[1024], large_serial_output[1024], large_parallel_output[1024];
+    snprintf(large_input, sizeof(large_input), "%s/tests/data/large_test.txt", project_root);
+    snprintf(large_serial_output, sizeof(large_serial_output), 
+             "%s/tests/results/serial_results/large_result.txt", project_root);
+    snprintf(large_parallel_output, sizeof(large_parallel_output), 
+             "%s/tests/results/parallel_results/large_result.txt", project_root);
+    
+    if (file_exists(large_input)) {
+        run_serial_test("大规模", large_input, large_serial_output);
+        run_parallel_test("大规模", large_input, large_parallel_output);
+        
+        char large_expected[1024];
+        snprintf(large_expected, sizeof(large_expected), 
+                 "%s/tests/expected/large_expected.txt", project_root);
+        compare_results("大规模", large_serial_output, large_parallel_output, large_expected);
+    }
+    
+    // Use existing Frankenstein test data
+    char frankenstein_input[1024], frankenstein_serial_output[1024], frankenstein_parallel_output[1024];
+    snprintf(frankenstein_input, sizeof(frankenstein_input), "%s/testcase/Frankenstein.txt", project_root);
+    snprintf(frankenstein_serial_output, sizeof(frankenstein_serial_output), 
+             "%s/tests/results/serial_results/frankenstein_result.txt", project_root);
+    snprintf(frankenstein_parallel_output, sizeof(frankenstein_parallel_output), 
+             "%s/tests/results/parallel_results/frankenstein_result.txt", project_root);
+    
+    if (file_exists(frankenstein_input)) {
+        printf("\n%s使用Frankenstein.txt进行测试%s\n", BLUE, NC);
+        run_serial_test("Frankenstein", frankenstein_input, frankenstein_serial_output);
+        run_parallel_test("Frankenstein", frankenstein_input, frankenstein_parallel_output);
+        compare_results("Frankenstein", frankenstein_serial_output, frankenstein_parallel_output, NULL);
+    }
+    
+    return 0;
+}
+
+int main() {
+    // Get project root directory
+    getcwd(project_root, sizeof(project_root));
+    snprintf(test_dir, sizeof(test_dir), "%s/tests", project_root);
+    
+    printf("%s=== MapReduce Word Count Test Framework ===%s\n", BLUE, NC);
+    printf("Project root: %s\n", project_root);
+    printf("Test directory: %s\n", test_dir);
+    
+    // Create necessary directories
+    create_directory("tests/results/serial_results");
+    create_directory("tests/results/parallel_results");
+    create_directory("tests/expected");
+    
+    // Compile programs
+    if (compile_programs() != 0) {
+        printf("%sCompilation failed, exiting test%s\n", RED, NC);
+        return 1;
+    }
+    
+    // Generate test data
+    generate_test_data();
+    
+    // Run all tests
+    run_all_tests();
+    
+    printf("\n%s=== Test Complete ===%s\n", GREEN, NC);
+    printf("Results saved to: %s/tests/results/\n", project_root);
+    printf("Run performance test: ./scripts/performance_test.sh\n");
+    printf("Validate results: python3 scripts/validate_results.py\n");
+    
+    return 0;
+}
+
+```
