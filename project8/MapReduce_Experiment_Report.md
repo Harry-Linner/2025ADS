@@ -2,7 +2,7 @@
 
 ## 1. Background Introduction
 
-&nbsp;&nbsp;&nbsp;&nbsp;MapReduce is a programming model and an associated implementation for processing and generating large data sets with a parallel, distributed algorithm on a cluster. The model is a specialization of the divide-and-conquer paradigm, where the problem is divided into independent sub-problems, solved in parallel, and then the results are combined to form the final solution.
+&nbsp;&nbsp;&nbsp;&nbsp;MapReduce is a programming model and an associated implementation for processing and generating large data sets with a parallel, distributed algorithm on a cluster.The problem is divided into independent sub-problems, solved in parallel, and then the results are combined to form the final solution.
 
 &nbsp;&nbsp;&nbsp;&nbsp;The MapReduce model consists of two main functions:
 - **Map()**: Takes a key-value pair as input and produces a set of intermediate key-value pairs.
@@ -21,7 +21,6 @@
 5. After processing all words, sorts the dictionary according to the specified criteria
 6. Outputs the sorted results
 
-&nbsp;&nbsp;&nbsp;&nbsp;The time complexity of the serial algorithm is O(n × m), where n is the number of words in the input and m is the number of unique words, due to the linear search in the dictionary for each word.
 
 ### 2.2 Parallel Algorithm (MapReduce)
 &nbsp;&nbsp;&nbsp;&nbsp;The parallel implementation follows the MapReduce paradigm:
@@ -39,7 +38,6 @@
 4. Sorts the results according to the specified criteria
 5. Outputs the sorted results
 
-&nbsp;&nbsp;&nbsp;&nbsp;The parallel algorithm's complexity depends on the distribution of work across multiple threads/processes, potentially achieving O(n/p + m log m) where p is the number of parallel processing units.
 
 ## 3. Performance Analysis
 
@@ -105,7 +103,7 @@
 
 ### 4.3 Scalability Analysis
 
-The parallel MapReduce implementation shows better scalability characteristics than the serial algorithm, particularly for large datasets. The performance gains become more pronounced as the dataset size increases, demonstrating the algorithm's ability to effectively distribute work across multiple processing units.
+&nbsp;&nbsp;&nbsp;&nbsp;The parallel MapReduce implementation shows better scalability characteristics than the serial algorithm, particularly for large datasets. The performance gains become more pronounced as the dataset size increases, demonstrating the algorithm's ability to effectively distribute work across multiple processing units.
 
 ## 5. Conclusion
 
