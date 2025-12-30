@@ -120,3 +120,235 @@
 5. **Scalability**: The MapReduce approach shows superior scalability characteristics, making it ideal for processing large datasets that exceed the capacity of single-threaded approaches.
 
 &nbsp;&nbsp;&nbsp;&nbsp;In conclusion, MapReduce provides a powerful framework for parallel processing of large datasets, with the benefits becoming increasingly apparent as data size grows. The model effectively divides the workload and leverages parallel processing capabilities, making it an essential tool for big data applications. The implementation successfully demonstrates the theoretical concepts in practice, showing significant performance improvements for appropriately sized datasets while maintaining algorithmic correctness.
+
+## Appendix:
+### mapper.c:
+```
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+#define MAX_WORD_LEN 100
+
+/*
+  Data Cleaning: Same logic as serial program to ensure consistency.
+ */
+void clean_word(char *src, char *dest) {
+    int j = 0;
+    for (int i = 0; src[i]; i++) {
+        if (isalpha(src[i])) {
+            dest[j++] = tolower(src[i]);
+        }
+    }
+    dest[j] = '\0';
+}
+
+int main() {
+    char buffer[MAX_WORD_LEN];
+    char cleaned[MAX_WORD_LEN];
+
+    // Read from stdin (Hadoop feeds data here)
+    while (scanf("%s", buffer) != EOF) {
+        clean_word(buffer, cleaned);
+        if (strlen(cleaned) > 0) {
+            // Output format: word[TAB]1[NEWLINE]
+            printf("%s\t1\n", cleaned);
+        }
+    }
+    return 0;
+}
+```
+
+### reducer.c:
+```
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX_UNIQUE_WORDS 500000
+#define MAX_WORD_LEN 100
+
+typedef struct {
+    char word[MAX_WORD_LEN];
+    int count;
+} WordFreq;
+
+WordFreq results[MAX_UNIQUE_WORDS];
+int result_count = 0;
+
+/**
+ * Comparison function for final output sorting.
+ * 1. Count DESC
+ * 2. Alphabetical ASC
+ */
+int compare(const void *a, const void *b) {
+    WordFreq *w1 = (WordFreq *)a;
+    WordFreq *w2 = (WordFreq *)b;
+    if (w1->count != w2->count) {
+        return w2->count - w1->count;
+    }
+    return strcmp(w1->word, w2->word);
+}
+
+int main() {
+    char current_word[MAX_WORD_LEN] = "";
+    char word_buffer[MAX_WORD_LEN];
+    int count;
+    int current_sum = 0;
+
+    // Read from stdin: word[TAB]count
+    // Hadoop ensures that all occurrences of the same word are grouped together
+    while (scanf("%s\t%d", word_buffer, &count) != EOF) {
+        if (strcmp(current_word, word_buffer) == 0) {
+            current_sum += count;
+        } else {
+            // New word encountered, save the previous one
+            if (strlen(current_word) > 0) {
+                strcpy(results[result_count].word, current_word);
+                results[result_count].count = current_sum;
+                result_count++;
+            }
+            strcpy(current_word, word_buffer);
+            current_sum = count;
+        }
+    }
+
+    //The last word
+    if (strlen(current_word) > 0) {
+        strcpy(results[result_count].word, current_word);
+        results[result_count].count = current_sum;
+        result_count++;
+    }
+
+    // Sort the final collected results as per assignment requirements
+    qsort(results, result_count, sizeof(WordFreq), compare);
+
+    // Print to stdout
+    for (int i = 0; i < result_count; i++) {
+        printf("%s %d\n", results[i].word, results[i].count);
+    }
+
+    return 0;
+}
+```
+
+### serial.c:
+```
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+#include <time.h>
+
+#define MAX_WORDS 500000  // Maximum number of unique words allowed
+#define MAX_WORD_LEN 100  // Maximum length of a single word
+
+// Structure to store word and its frequency
+typedef struct {
+    char word[MAX_WORD_LEN];
+    int count;
+} WordFreq;
+
+WordFreq dict[MAX_WORDS];
+int dict_size = 0;
+
+/**
+ * Data Cleaning: Converts word to lowercase and removes non-alphabetic characters.
+ */
+void clean_word(char *src, char *dest) {
+    int j = 0;
+    for (int i = 0; src[i]; i++) {
+        if (isalpha(src[i])) { // Keep only alphabetic characters
+            dest[j++] = tolower(src[i]);
+        }
+    }
+    dest[j] = '\0';
+}
+
+/**
+ * Word Counting: Searches for the word in the dictionary. 
+ * Increments count if found, otherwise adds as a new entry.
+ */
+void add_to_dict(char *w) {
+    if (strlen(w) == 0) return;
+    
+    // Linear Search: This is the bottleneck of the serial program.
+    // It will serve as a great point of comparison for your MapReduce analysis.
+    for (int i = 0; i < dict_size; i++) {
+        if (strcmp(dict[i].word, w) == 0) {
+            dict[i].count++;
+            return;
+        }
+    }
+    
+    // Add new word if not found
+    if (dict_size < MAX_WORDS) {
+        strcpy(dict[dict_size].word, w);
+        dict[dict_size].count = 1;
+        dict_size++;
+    }
+}
+
+/**
+ * Comparison function for qsort.
+ * Sorting Rules:
+ * 1. Primary: Frequency in non-increasing (descending) order.
+ * 2. Secondary: Lexicographical order (ascending) if frequencies are equal.
+ */
+int compare(const void *a, const void *b) {
+    WordFreq *w1 = (WordFreq *)a;
+    WordFreq *w2 = (WordFreq *)b;
+    
+    if (w1->count != w2->count) {
+        return w2->count - w1->count; // Higher count comes first
+    }
+    return strcmp(w1->word, w2->word); // Dictionary order (a-z)
+}
+
+int main(int argc, char *argv[]) {
+    if (argc < 2) {
+        printf("Usage: %s <filename>\n", argv[0]);
+        return 1;
+    }
+
+    FILE *file = fopen(argv[1], "r");
+    if (!file) {
+        perror("Error opening file");
+        return 1;
+    }
+
+    char buffer[MAX_WORD_LEN];
+    char cleaned[MAX_WORD_LEN];
+    
+    fprintf(stderr, "Starting serial processing...\n");
+    clock_t start = clock(); // Start timing
+
+    // Read and count words
+    while (fscanf(file, "%s", buffer) != EOF) {
+        clean_word(buffer, cleaned);
+        add_to_dict(cleaned);
+    }
+    fclose(file);
+
+    // Sort the results based on the assignment requirements
+    qsort(dict, dict_size, sizeof(WordFreq), compare);
+
+    clock_t end = clock(); // End timing
+    double time_spent = (double)(end - start) / CLOCKS_PER_SEC;
+
+    // Output results: word followed by a space and its count
+    // No extra space at the end of each line
+    for (int i = 0; i < dict_size; i++) {
+        printf("%s %d\n", dict[i].word, dict[i].count);
+    }
+
+    // Print performance metrics to stderr (to keep stdout clean for the results)
+    fprintf(stderr, "\n--- Performance Metrics ---\n");
+    fprintf(stderr, "Total unique words: %d\n", dict_size);
+    fprintf(stderr, "Time taken: %.4f seconds\n", time_spent);
+
+    return 0;
+}
+```
+
+
